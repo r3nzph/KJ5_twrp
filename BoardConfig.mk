@@ -211,6 +211,8 @@ TW_USES_OTG_USB := true
 # IMPORTANT FIX
 TW_NO_USB_STORAGE := false
 TW_INCLUDE_FUSE_EXFAT := true
+TW_INCLUDE_NTFS_3G := true
+TW_INCLUDE_EXFAT := true
 
 # Screenshot fix
 TW_SCREENSHOT_PATH := /data/media/0/Pictures/Screenshots
