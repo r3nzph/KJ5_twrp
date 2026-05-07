@@ -23,8 +23,6 @@ TARGET_IS_64_BIT := true
 TARGET_USES_64_BIT_BINDER := true
 
 BOARD_USES_MTK_HARDWARE := true
-ENABLE_CPUSETS := true
-ENABLE_SCHEDBOOST := true
 
 # =========================
 # Bootloader
@@ -41,7 +39,7 @@ BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 ALLOW_MISSING_DEPENDENCIES := true
 
 # =========================
-# Copy Out Partitions
+# Dynamic Partitions
 # =========================
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
@@ -50,12 +48,26 @@ TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 # =========================
 # Display / UI
 # =========================
-TARGET_SCREEN_DENSITY := 280
-TW_THEME := portrait_hdpi
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+TARGET_SCREEN_DENSITY := 320
+
+TW_THEME := portrait_xhdpi
+TW_RESOLUTION := 1080x2400
 
 TW_Y_OFFSET := 0
 TW_H_OFFSET := 0
+
+TW_STATUS_ICONS_ALIGN := center
+
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+
+TW_FRAMERATE := 90
+
+TW_SCREEN_BLANK_ON_BOOT := true
+TW_NO_SCREEN_BLANK := true
+
+TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
+TW_MAX_BRIGHTNESS := 255
+TW_DEFAULT_BRIGHTNESS := 120
 
 # =========================
 # Device
@@ -63,7 +75,7 @@ TW_H_OFFSET := 0
 TARGET_OTA_ASSERT_DEVICE := KJ5
 
 # =========================
-# Kernel (PREBUILT MTK)
+# Kernel (PREBUILT)
 # =========================
 TARGET_NO_KERNEL := false
 TARGET_FORCE_PREBUILT_KERNEL := true
@@ -72,9 +84,8 @@ TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 
 BOARD_KERNEL_IMAGE_NAME := kernel
-BOARD_RAMDISK_USE_LZ4 := true
 
-# PREBUILT ONLY
+BOARD_RAMDISK_USE_LZ4 := true
 BOARD_USES_GENERIC_KERNEL_IMAGE := false
 
 # =========================
@@ -92,13 +103,13 @@ BOARD_PAGE_SIZE := 4096
 
 BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
 
-BOARD_MKBOOTIMG_ARGS += --vendor_cmdline "$(BOARD_VENDOR_CMDLINE)"
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE)
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --vendor_cmdline "$(BOARD_VENDOR_CMDLINE)"
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
 # =========================
@@ -115,9 +126,9 @@ BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
 
 BOARD_SUPER_PARTITION_GROUPS := main
 BOARD_MAIN_SIZE := 9122611200
-BOARD_SUPER_PARTITION_SIZE := 9122611200
+BOARD_SUPER_PARTITIONS_SIZE := 9122611200
 
-BOARD_MAIN_PARTITION_LIST := \
+BOARD_MAIN_PARTITION_LIST += \
     system \
     system_ext \
     product \
@@ -128,8 +139,8 @@ BOARD_MAIN_PARTITION_LIST := \
 # =========================
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 
@@ -152,9 +163,10 @@ BOARD_VNDK_VERSION := current
 # =========================
 TARGET_NO_RECOVERY := true
 
+BOARD_USES_RECOVERY_AS_VENDOR_BOOT := true
+
 BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
-BOARD_USES_RECOVERY_AS_VENDOR_BOOT := true
 
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
@@ -167,64 +179,51 @@ BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
 # =========================
-# Crypto (NO DECRYPT BUILD)
+# Crypto (disabled)
 # =========================
 TW_PREPARE_MEDIA_EARLY := true
+
 TW_FORCE_KEYMASTER_VER := true
 OF_DEFAULT_KEYMASTER_VERSION := 4.1
 
 # =========================
-# Logging / Debug
+# Debug
 # =========================
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TWRP_EVENT_LOGGING := true
 
 # =========================
-# TWRP / OrangeFox Features
-# =========================
-TW_ALLOW_FORMAT_DATA := true
-TW_FRAMERATE := 90
-
-TW_EXTRA_LANGUAGES := true
-TW_INCLUDE_FUSE_EXFAT := true
-
-TW_SCREEN_BLANK_ON_BOOT := true
-TW_NO_SCREEN_BLANK := true
-
-TW_INPUT_BLACKLIST := "hbtp_vm"
-
-TW_USE_TOOLBOX := true
-TW_INCLUDE_RESETPROP := true
-TW_INCLUDE_LPTOOLS := true
-
-TW_INCLUDE_FB2PNG := true
-
-# =========================
-# Internal Storage
+# Storage
 # =========================
 RECOVERY_SDCARD_ON_DATA := true
-
-TW_INTERNAL_STORAGE_PATH := "/data/media/0"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "/data"
-
-# =========================
-# USB / MTP / OTG
-# =========================
-TW_USES_OTG_USB := true
 
 TW_HAS_MTP := true
 TW_MTP_DEVICE := /dev/mtp_usb
 
-TW_USB_STORAGE := true
+TW_USES_OTG_USB := true
+
+TW_NO_USB_STORAGE := false
+
+TW_SCREENSHOT_PATH := /sdcard/Pictures/Screenshots
 
 # =========================
-# Brightness
+# Tools
 # =========================
-TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_LPTOOLS := true
+TW_INCLUDE_FUSE_EXFAT := true
+TW_INCLUDE_FB2PNG := true
 
-TW_MAX_BRIGHTNESS := 2047
-TW_DEFAULT_BRIGHTNESS := 1200
+TARGET_USES_MKE2FS := true
+
+TW_USE_TOOLBOX := true
+
+# =========================
+# Extra UI
+# =========================
+TW_ALLOW_FORMAT_DATA := true
+TW_EXTRA_LANGUAGES := true
 
 # =========================
 # Props
@@ -232,11 +231,11 @@ TW_DEFAULT_BRIGHTNESS := 1200
 TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
 
 # =========================
-# Misc
+# Thermal
 # =========================
 TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone4/temp
 
 # =========================
 # Device Info
 # =========================
-TW_DEVICE_VERSION := KJ5 OFox Hybrid Prebuilt
+TW_DEVICE_VERSION := KJ5 OFox Stable Prebuilt
