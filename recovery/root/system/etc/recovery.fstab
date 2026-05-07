@@ -9,12 +9,12 @@ product     /product     ext4    ro,barrier=1,discard    wait,logical,first_stag
 # =========================
 # Metadata
 # =========================
-/dev/block/by-name/metadata   /metadata   ext4    noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
+/dev/block/by-name/metadata   /metadata                 ext4      /dev/block/by-name/md_udc            flags=display=metadata;backup=0
 
 # =========================
 # Data (FBE/F2FS)
 # =========================
-/dev/block/by-name/userdata   /data   f2fs   noatime,nosuid,nodev,discard,inlinecrypt,reserve_root=32768,resgid=1065,fsync_mode=nobarrier   latemount,wait,check,quota,formattable,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption
+/dev/block/by-name/userdata   /data                     f2fs      /dev/block/by-name/userdata          flags=display=data;fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized;keydirectory=/metadata/vold/metadata_encryption
 
 # Need to have this entry in here even though the mount point itself is no longer needed.
 # The update_engine code looks for this entry in order to determine the boot device address
