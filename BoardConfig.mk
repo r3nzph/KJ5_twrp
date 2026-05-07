@@ -213,7 +213,7 @@ TW_NO_USB_STORAGE := false
 TW_INCLUDE_FUSE_EXFAT := true
 
 # Screenshot fix
-TW_SCREENSHOT_PATH := /sdcard/Pictures/Screenshots
+TW_SCREENSHOT_PATH := /data/media/0/Pictures/Screenshots
 
 # =========================
 # Tools
@@ -231,6 +231,8 @@ TW_USE_TOOLBOX := true
 # =========================
 TW_ALLOW_FORMAT_DATA := true
 TW_EXTRA_LANGUAGES := true
+TW_EXCLUDE_APEX := true
+TW_NO_LEGACY_PROPS := true
 
 # =========================
 # Props
