@@ -46,24 +46,29 @@ TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 
 # =========================
-# Display / UI
+# Display / UI (FIXED)
 # =========================
+TARGET_SCREEN_WIDTH := 720
+TARGET_SCREEN_HEIGHT := 1612
 TARGET_SCREEN_DENSITY := 320
 
-TW_THEME := portrait_xhdpi
-TW_RESOLUTION := 1080x2400
-
-TW_Y_OFFSET := 0
-TW_H_OFFSET := 0
-
-TW_STATUS_ICONS_ALIGN := center
+TW_THEME := portrait_hdpi
 
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
-TW_FRAMERATE := 90
+TW_STATUS_ICONS_ALIGN := center
 
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_NO_SCREEN_BLANK := true
+TW_NO_SCREEN_TIMEOUT := true
+
+TW_USE_NEW_MINADBD := true
+
+# IMPORTANT:
+# REMOVE BAD SCALING VALUES
+# DO NOT USE portrait_xhdpi
+# DO NOT USE TW_RESOLUTION
+# DO NOT USE TW_FRAMERATE
 
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
@@ -194,7 +199,7 @@ TARGET_USES_LOGD := true
 TWRP_EVENT_LOGGING := true
 
 # =========================
-# Storage
+# Storage / MTP / OTG
 # =========================
 RECOVERY_SDCARD_ON_DATA := true
 
@@ -203,8 +208,11 @@ TW_MTP_DEVICE := /dev/mtp_usb
 
 TW_USES_OTG_USB := true
 
+# IMPORTANT FIX
 TW_NO_USB_STORAGE := false
+TW_INCLUDE_FUSE_EXFAT := true
 
+# Screenshot fix
 TW_SCREENSHOT_PATH := /sdcard/Pictures/Screenshots
 
 # =========================
@@ -212,7 +220,6 @@ TW_SCREENSHOT_PATH := /sdcard/Pictures/Screenshots
 # =========================
 TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LPTOOLS := true
-TW_INCLUDE_FUSE_EXFAT := true
 TW_INCLUDE_FB2PNG := true
 
 TARGET_USES_MKE2FS := true
