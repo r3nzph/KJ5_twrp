@@ -9,22 +9,20 @@ ro.postinstall.fstab.prefix=/system
 ro.secure=0
 ro.adb.secure=0
 ro.debuggable=1
-persist.sys.usb.config=adb,mtp
 
 # =========================
 # USB (STABLE)
 # =========================
+ro.sys.usb.storage.type=mtp
+persist.sys.usb.config=adb,mtp
 sys.usb.config=adb,mtp
 persist.sys.isUsbOtgEnabled=true
 
 # =========================
-# DISABLE CRYPTO (IMPORTANT FOR 0MB FIX)
+# CRYPTO (IMPORTANT FOR 0MB FIX)
 # =========================
-# These cause decryption attempts → breaks /data mount
-# REMOVE metadata encryption flags completely
-
-# ro.crypto.volume.filenames_mode ❌ REMOVE
-# ro.crypto.support_metadata_encrypt ❌ REMOVE
+ro.crypto.volume.filenames_mode=aes-256-cts
+ro.crypto.support_metadata_encrypt=true
 
 # =========================
 # TEE (SAFE KEEP)
@@ -37,12 +35,9 @@ ro.vendor.mtk_trustonic_tee_support=1
 # =========================
 ro.hardware.gatekeeper=trustonic
 keymaster_ver=4.1
-
-# REMOVE THIS (causes issues sometimes)
-# ro.hardware.kmsetkey=trustonic ❌
+ro.hardware.kmsetkey=trustonic 
 
 # =========================
 # OPTIONAL (helps some MTK recoveries)
 # =========================
 ro.boot.dynamic_partitions=true
-ro.boot.slot_suffix=_a
