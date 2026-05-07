@@ -200,8 +200,8 @@ BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 # =========================
 # Crypto
 # =========================
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
+# TW_INCLUDE_CRYPTO := true
+# TW_INCLUDE_CRYPTO_FBE := true
 
 BOARD_USES_METADATA_PARTITION := true
 TW_USE_METADATA_PARTITION := true
