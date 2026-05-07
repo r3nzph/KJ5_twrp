@@ -19,7 +19,7 @@ product     /product     ext4    ro,barrier=1,discard    wait,logical,first_stag
 # Need to have this entry in here even though the mount point itself is no longer needed.
 # The update_engine code looks for this entry in order to determine the boot device address
 # and fails if it does not find it.
-/dev/block/by-name/misc		/mis
+/dev/block/by-name/misc    /misc    emmc    defaults    defaults
 
 # =========================
 # Cache (MTK legacy)
