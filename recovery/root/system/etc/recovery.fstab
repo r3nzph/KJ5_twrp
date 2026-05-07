@@ -9,25 +9,20 @@ product     /product     ext4    ro,barrier=1,discard    wait,logical,first_stag
 vendor_dlkm /vendor_dlkm ext4    ro,barrier=1,discard    wait,logical,slotselect
 odm_dlkm    /odm_dlkm    ext4    ro,barrier=1,discard    wait,logical,slotselect
 
-
 # =========================
-# Metadata (CRITICAL for Android 12/13)
+# Metadata
 # =========================
 /dev/block/by-name/metadata   /metadata   ext4    noatime,nosuid,nodev,discard    wait,check,formattable
 
+# =========================
+# Data (STABLE NO-DECRYPT F2FS)
+# =========================
+/dev/block/by-name/userdata   /data   f2fs    noatime,nosuid,nodev,discard,fsync_mode=nobarrier,reserve_root=32768,resgid=1065    wait,check,formattable,quota
 
 # =========================
-# Data (STABLE F2FS NO-DECRYPT BUILD)
-# FIX: removed inline_xattr (causes instability on MTK recovery)
+# Cache (MTK legacy)
 # =========================
-/dev/block/by-name/userdata   /data   f2fs   noatime,nosuid,nodev,discard,inlinecrypt,quota    wait,check,formattable,latemount
-
-
-# =========================
-# Cache (optional MTK legacy partition)
-# =========================
-/dev/block/by-name/tranfs     /cache  ext4    noatime,nosuid,nodev,discard    wait,check,formattable
-
+/dev/block/by-name/tranfs     /cache   ext4    noatime,nosuid,nodev,discard    wait,check,formattable
 
 # =========================
 # Vendor persistent storage
@@ -37,7 +32,6 @@ odm_dlkm    /odm_dlkm    ext4    ro,barrier=1,discard    wait,logical,slotselect
 /dev/block/by-name/nvcfg      /mnt/vendor/nvcfg      ext4    noatime,nosuid,nodev    wait
 /dev/block/by-name/protect1   /mnt/vendor/protect_f  ext4    noatime,nosuid,nodev    wait
 /dev/block/by-name/protect2   /mnt/vendor/protect_s  ext4    noatime,nosuid,nodev    wait
-
 
 # =========================
 # Boot / firmware partitions
