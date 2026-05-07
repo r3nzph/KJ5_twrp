@@ -13,24 +13,51 @@ AB_OTA_PARTITIONS += \
     vbmeta_system \
     vbmeta_vendor
 
-# A/B
-PRODUCT_PACKAGES += \
-    otapreopt_script
-
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
-    FILESYSTEM_TYPE_system=ext4 \
-    POSTINSTALL_OPTIONAL_system=true
+    FILESYSTEM_TYPE_system=erofs \
+    POSTINSTALL_OPTIONAL_system=true\
+    RUN_POSTINSTALL_vendor=true \
+    POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+    FILESYSTEM_TYPE_vendor=erofs \
+    POSTINSTALL_OPTIONAL_vendor=true
+
+PRODUCT_PACKAGES += \
+    otapreopt_script \
+    cppreopts.sh
+
+PRODUCT_PROPERTY_OVERRIDES += ro.twrp.vendor_boot=true
 
 PRODUCT_PACKAGES_DEBUG += \
     bootctrl \
     update_engine_client
 
-# Bootctrl
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.2-mtkimpl \
-    android.hardware.boot@1.2-mtkimpl.recovery
+    bootctrl.mt6768 \
+    bootctrl.mt6768.recovery
+
+# Boot control HAL
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.2-service \
+    android.hardware.boot@1.2-impl \
+    android.hardware.boot@1.2-impl.recovery
+
+# Health HAL
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.1-impl \
+    android.hardware.health@2.1-service
+
+PRODUCT_PACKAGES_DEBUG += \
+    bootctrl
+
+# Keymaster
+PRODUCT_PACKAGES += \
+    android.hardware.keymaster@4.1
+
+PRODUCT_PACKAGES += \
+    create_pl_dev \
+    create_pl_dev.recovery
 
 # Fastbootd
 PRODUCT_PACKAGES += \
@@ -40,6 +67,13 @@ PRODUCT_PACKAGES += \
 # Keystore2
 PRODUCT_PACKAGES += \
     android.system.keystore2
+
+PRODUCT_PACKAGES_DEBUG += \
+    update_engine_client
+
+PRODUCT_PACKAGES += \
+    otapreopt_script \
+    checkpoint_gc
 
 # Update Engine
 PRODUCT_PACKAGES += \
