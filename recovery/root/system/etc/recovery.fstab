@@ -1,44 +1,26 @@
-# =========================
-# Dynamic partitions (A/B logical)
-# =========================
-system      /system      ext4    ro,barrier=1,discard    wait,logical,first_stage_mount,slotselect
-system_ext  /system_ext  ext4    ro,barrier=1,discard    wait,logical,first_stage_mount,slotselect
-vendor      /vendor      ext4    ro,barrier=1,discard    wait,logical,first_stage_mount,slotselect
-product     /product     ext4    ro,barrier=1,discard    wait,logical,first_stage_mount,slotselect
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
-# =========================
-# Metadata
-# =========================
-/dev/block/by-name/metadata   /metadata                 ext4      /dev/block/by-name/md_udc            flags=display=metadata;backup=0
+#<src>				<mnt_point>		<type>		<mnt_flags and options>															<fs_mgr_flags>
+# Logical partitions
+system                                                 /system                erofs    ro                                wait,slotselect,avb=vbmeta_system,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey
+system                                                 /system                ext4     ro                                wait,slotselect,avb=vbmeta_system,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey
+system_ext                                             /system_ext            erofs    ro                                wait,slotselect,avb=vbmeta_system,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey
+system_ext                                             /system_ext            ext4     ro                                wait,slotselect,avb=vbmeta_system,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey
+product                                                /product               erofs    ro                                wait,slotselect,avb,logical,first_stage_mount
+product                                                /product               ext4     ro                                wait,slotselect,avb,logical,first_stage_mount
+vendor                                                 /vendor                erofs    ro                                wait,slotselect,avb,logical,first_stage_mount
+vendor                                                 /vendor                ext4     ro                                wait,slotselect,avb,logical,first_stage_mount
 
-# =========================
-# Data (FBE/F2FS)
-# =========================
-/dev/block/by-name/userdata   /data                     f2fs      /dev/block/by-name/userdata          flags=display=data;fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized;keydirectory=/metadata/vold/metadata_encryption
+# Userdata partition
+/dev/block/by-name/metadata	/metadata		ext4		noatime,nosuid,nodev,discard wait,check,formattable,first_stage_mount
+/dev/block/by-name/userdata	/data			f2fs		noatime,nosuid,nodev,discard,noflush_merge,fsync_mode=nobarrier,reserve_root=134217,resgid=1065,inlinecrypt wait,check,formattable,quota,reservedsize=128m,latemount,resize,readahead_size_kb=512,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption,fsverity
 
 # Need to have this entry in here even though the mount point itself is no longer needed.
 # The update_engine code looks for this entry in order to determine the boot device address
 # and fails if it does not find it.
-/dev/block/by-name/misc    /misc    emmc    defaults    defaults
+/dev/block/by-name/misc		/misc			emmc		defaults					defaults
 
-# =========================
-# Cache (MTK legacy)
-# =========================
-/dev/block/by-name/tranfs     /cache   ext4    noatime,nosuid,nodev,discard    wait,check,formattable
-
-# =========================
-# Vendor persistent storage
-# =========================
-/dev/block/by-name/persist    /mnt/vendor/persist    ext4    noatime,nosuid,nodev    wait
-/dev/block/by-name/nvdata     /mnt/vendor/nvdata     ext4    noatime,nosuid,nodev    wait
-/dev/block/by-name/nvcfg      /mnt/vendor/nvcfg      ext4    noatime,nosuid,nodev    wait
-/dev/block/by-name/protect1   /mnt/vendor/protect_f  ext4    noatime,nosuid,nodev    wait
-/dev/block/by-name/protect2   /mnt/vendor/protect_s  ext4    noatime,nosuid,nodev    wait
-
-# =========================
-# Boot / firmware partitions
-# =========================
-/dev/block/by-name/boot          /boot          emmc    defaults    defaults
-/dev/block/by-name/vendor_boot   /vendor_boot   emmc    defaults    defaults
-/dev/block/by-name/dtbo          /dtbo          emmc    defaults    defaults
-/dev/block/by-name/vbmeta        /vbmeta        emmc    defaults    defaults
+# Use tranfs as cache
+/dev/block/by-name/tranfs	/cache			ext4		noatime,nosuid,nodev,discard			wait,check,formattable											wait,check,formattable
