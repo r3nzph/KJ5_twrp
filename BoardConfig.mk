@@ -41,19 +41,21 @@ BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 ALLOW_MISSING_DEPENDENCIES := true
 
 # =========================
-# IMPORTANT FIX (YOUR ERROR)
+# Copy Out Partitions
 # =========================
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
-TARGET_COPY_OUT_SYSTEM := system
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 
 # =========================
-# Display
+# Display / UI
 # =========================
-TARGET_SCREEN_DENSITY := 320
+TARGET_SCREEN_DENSITY := 280
 TW_THEME := portrait_hdpi
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+
+TW_Y_OFFSET := 0
+TW_H_OFFSET := 0
 
 # =========================
 # Device
@@ -72,17 +74,20 @@ TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_KERNEL_IMAGE_NAME := kernel
 BOARD_RAMDISK_USE_LZ4 := true
 
+# PREBUILT ONLY
 BOARD_USES_GENERIC_KERNEL_IMAGE := false
 
 # =========================
 # Boot Image
 # =========================
 BOARD_BOOT_HEADER_VERSION := 4
+
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_RAMDISK_OFFSET := 0x07c08000
 BOARD_KERNEL_TAGS_OFFSET := 0x0bc08000
 BOARD_DTB_OFFSET := 0x0bc08000
+
 BOARD_PAGE_SIZE := 4096
 
 BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
@@ -110,9 +115,9 @@ BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
 
 BOARD_SUPER_PARTITION_GROUPS := main
 BOARD_MAIN_SIZE := 9122611200
-BOARD_SUPER_PARTITIONS_SIZE := 9122611200
+BOARD_SUPER_PARTITION_SIZE := 9122611200
 
-BOARD_MAIN_PARTITION_LIST += \
+BOARD_MAIN_PARTITION_LIST := \
     system \
     system_ext \
     product \
@@ -133,6 +138,9 @@ TARGET_USERIMAGES_USE_F2FS := true
 
 BOARD_USES_METADATA_PARTITION := true
 
+BOARD_SUPPRESS_SECURE_ERASE := true
+BOARD_HAS_LARGE_FILESYSTEM := true
+
 # =========================
 # Platform
 # =========================
@@ -140,17 +148,17 @@ TARGET_BOARD_PLATFORM := mt6768
 BOARD_VNDK_VERSION := current
 
 # =========================
-# Recovery (HYBRID SAFE)
+# Recovery
 # =========================
 TARGET_NO_RECOVERY := true
 
 BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+BOARD_USES_RECOVERY_AS_VENDOR_BOOT := true
 
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
 BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_USES_RECOVERY_AS_VENDOR_BOOT := true
 
 # =========================
 # AVB
@@ -159,42 +167,64 @@ BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
 # =========================
-# Crypto (OFF STABLE BUILD)
+# Crypto (NO DECRYPT BUILD)
 # =========================
 TW_PREPARE_MEDIA_EARLY := true
 TW_FORCE_KEYMASTER_VER := true
 OF_DEFAULT_KEYMASTER_VERSION := 4.1
 
 # =========================
-# Debug
+# Logging / Debug
 # =========================
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TWRP_EVENT_LOGGING := true
 
 # =========================
-# UI
+# TWRP / OrangeFox Features
 # =========================
 TW_ALLOW_FORMAT_DATA := true
 TW_FRAMERATE := 90
+
 TW_EXTRA_LANGUAGES := true
 TW_INCLUDE_FUSE_EXFAT := true
 
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_NO_SCREEN_BLANK := true
 
+TW_INPUT_BLACKLIST := "hbtp_vm"
+
+TW_USE_TOOLBOX := true
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_LPTOOLS := true
+
+TW_INCLUDE_FB2PNG := true
+
 # =========================
-# USB
+# Internal Storage
+# =========================
+RECOVERY_SDCARD_ON_DATA := true
+
+TW_INTERNAL_STORAGE_PATH := "/data/media/0"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "/data"
+
+# =========================
+# USB / MTP / OTG
 # =========================
 TW_USES_OTG_USB := true
+
 TW_HAS_MTP := true
 TW_MTP_DEVICE := /dev/mtp_usb
 
-# =========================
-# Storage
-# =========================
-RECOVERY_SDCARD_ON_DATA := true
 TW_USB_STORAGE := true
+
+# =========================
+# Brightness
+# =========================
+TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
+
+TW_MAX_BRIGHTNESS := 2047
+TW_DEFAULT_BRIGHTNESS := 1200
 
 # =========================
 # Props
@@ -204,7 +234,7 @@ TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
 # =========================
 # Misc
 # =========================
-TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone4/temp
+TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone4/temp
 
 # =========================
 # Device Info
