@@ -54,38 +54,6 @@ on post-fs-data
     mkdir /dev/.kmsg 0755 root root
 
 # =====================================================
-# CRYPTO STARTUP
-# =====================================================
-
-on property:hwservicemanager.ready=true
-    start mobicore
-    start keymaster_attestation-1-1
-    start vendor.gatekeeper-1-0
-    start vendor.keymaster-4-1-trustonic
-
-on property:crypto.ready=1
-    start mobicore
-    start keymaster_attestation-1-1
-    start vendor.gatekeeper-1-0
-    start vendor.keymaster-4-1-trustonic
-
-# =====================================================
-# CRYPTO STOP
-# =====================================================
-
-on property:twrp.decrypt.done=true
-    stop mobicore
-    stop keymaster_attestation-1-1
-    stop vendor.gatekeeper-1-0
-    stop vendor.keymaster-4-1-trustonic
-
-on property:crypto.ready=0
-    stop mobicore
-    stop keymaster_attestation-1-1
-    stop vendor.gatekeeper-1-0
-    stop vendor.keymaster-4-1-trustonic
-
-# =====================================================
 # BOOT
 # =====================================================
 
