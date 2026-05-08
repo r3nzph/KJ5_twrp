@@ -28,6 +28,6 @@ Works:
 - [X] Display
 - [X] Flashing
 - [X] MTP
-- [X] Sideload
-- [X] USB OTG
+- [ ] Sideload
+- [ ] USB OTG
 - [ ] Vibrator
