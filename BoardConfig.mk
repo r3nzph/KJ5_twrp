@@ -56,9 +56,11 @@ TW_THEME := portrait_hdpi
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
 TW_STATUS_ICONS_ALIGN := center
+
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_NO_SCREEN_BLANK := true
 TW_NO_SCREEN_TIMEOUT := true
+
 TW_USE_NEW_MINADBD := true
 
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
@@ -71,41 +73,20 @@ TW_DEFAULT_BRIGHTNESS := 120
 TARGET_OTA_ASSERT_DEVICE := KJ5
 
 # =========================
-# Kernel
+# Kernel / GKI
 # =========================
-TARGET_NO_KERNEL := false
-TARGET_FORCE_PREBUILT_KERNEL := true
+TARGET_NO_KERNEL := true
 
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
-
-BOARD_KERNEL_IMAGE_NAME := kernel
-
+BOARD_BOOT_HEADER_VERSION := 4
 BOARD_RAMDISK_USE_LZ4 := true
 
-# =========================
-# Boot Image
-# =========================
-BOARD_BOOT_HEADER_VERSION := 4
-
-BOARD_KERNEL_BASE := 0x40078000
-BOARD_KERNEL_OFFSET := 0x00008000
-BOARD_RAMDISK_OFFSET := 0x07c08000
-BOARD_KERNEL_TAGS_OFFSET := 0x0bc08000
-BOARD_DTB_OFFSET := 0x0bc08000
-
-BOARD_PAGE_SIZE := 4096
+BOARD_KERNEL_PAGESIZE := 4096
 
 BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
 
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE)
-BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
 BOARD_MKBOOTIMG_ARGS += --vendor_cmdline "$(BOARD_VENDOR_CMDLINE)"
-BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
 # =========================
 # DTBO
@@ -136,6 +117,7 @@ BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -159,24 +141,21 @@ BOARD_USES_RECOVERY_AS_VENDOR_BOOT := true
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 
+BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
+
 TW_INCLUDE_LOGICAL := true
+
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
 # =========================
-# CRYPTO (FIXED MINIMAL ADDITION)
+# Crypto
 # =========================
-
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 
-# 🔥 ADDED (this is what you were missing for MTK A13)
-# TW_INCLUDE_FBE_METADATA_DECRYPT := true
-# TW_INCLUDE_CRYPTO_METADATA := true
+BOARD_USES_METADATA_PARTITION := true
 
 TW_USE_FSCRYPT_POLICY := 2
-
-# ⚠️ removed forcing keymaster version (breaks MTK Trustonic trees)
-# TW_FORCE_KEYMASTER_VER := true
 
 # =========================
 # Verified Boot
@@ -196,10 +175,12 @@ TARGET_USES_LOGD := true
 # Storage
 # =========================
 RECOVERY_SDCARD_ON_DATA := true
+
 TW_HAS_MTP := true
 TW_USES_OTG_USB := true
 
 TW_NO_USB_STORAGE := false
+
 TW_INCLUDE_EXFAT := true
 TW_INCLUDE_NTFS_3G := true
 
@@ -211,6 +192,7 @@ TW_INCLUDE_LPTOOLS := true
 TW_INCLUDE_FB2PNG := true
 
 TARGET_USES_MKE2FS := true
+
 TW_USE_TOOLBOX := true
 
 # =========================
