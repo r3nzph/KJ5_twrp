@@ -195,6 +195,7 @@ TW_ALLOW_FORMAT_DATA := true
 TW_EXTRA_LANGUAGES := true
 TW_EXCLUDE_APEX := true
 TW_NO_LEGACY_PROPS := true
+TW_EXCLUDE_TZ_DATA := true
 
 # =========================
 # Device Info
