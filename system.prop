@@ -15,7 +15,7 @@ ro.debuggable=1
 # =========================
 ro.sys.usb.storage.type=mtp
 persist.sys.usb.config=adb,mtp
-sys.usb.config=adb,mtp
+# sys.usb.config=adb,mtp
 persist.sys.isUsbOtgEnabled=true
 
 # =========================
@@ -34,8 +34,8 @@ ro.vendor.mtk_trustonic_tee_support=1
 # Gatekeeper / Keymaster (SAFE MINIMAL)
 # =========================
 ro.hardware.gatekeeper=trustonic
-keymaster_ver=4.1
-ro.hardware.kmsetkey=trustonic 
+# keymaster_ver=4.1
+# ro.hardware.kmsetkey=trustonic 
 
 # =========================
 # OPTIONAL (helps some MTK recoveries)
