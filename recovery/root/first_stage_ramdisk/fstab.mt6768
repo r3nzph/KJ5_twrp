@@ -1,136 +1,53 @@
-```fstab
-system /system erofs ro wait,slotselect,avb=vbmeta_system,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey
-system /system ext4 ro wait,slotselect,avb=vbmeta_system,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey
+# =========================
+# SYSTEM (SAFE FIRST STAGE)
+# =========================
 
-system_ext /system_ext erofs ro wait,slotselect,avb=vbmeta_system,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey
-system_ext /system_ext ext4 ro wait,slotselect,avb=vbmeta_system,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey
+system /system erofs ro wait,slotselect,logical,first_stage_mount
+system /system ext4 ro wait,slotselect,logical,first_stage_mount
 
-vendor /vendor erofs ro wait,slotselect,avb,logical,first_stage_mount
-vendor /vendor ext4 ro wait,slotselect,avb,logical,first_stage_mount
+system_ext /system_ext erofs ro wait,slotselect,logical,first_stage_mount
+system_ext /system_ext ext4 ro wait,slotselect,logical,first_stage_mount
 
-product /product erofs ro wait,slotselect,avb,logical,first_stage_mount
-product /product ext4 ro wait,slotselect,avb,logical,first_stage_mount
+vendor /vendor erofs ro wait,slotselect,logical,first_stage_mount
+vendor /vendor ext4 ro wait,slotselect,logical,first_stage_mount
 
-# =====================================================
-# METADATA (FIXED)
-# =====================================================
+product /product erofs ro wait,slotselect,logical,first_stage_mount
+product /product ext4 ro wait,slotselect,logical,first_stage_mount
+
+# =========================
+# METADATA (KEEP CRITICAL ONLY)
+# =========================
 
 /dev/block/by-name/metadata /metadata ext4 noatime,nosuid,nodev,discard wait,check,formattable,first_stage_mount
 
-# =====================================================
-# DATA / FBE
-# =====================================================
+# =========================
+# DATA (KEEP, BUT NO EXTRA FLAGS)
+# =========================
 
-/dev/block/by-name/userdata /data f2fs noatime,nosuid,nodev,discard,noflush_merge,fsync_mode=nobarrier,reserve_root=134217,resgid=1065,inlinecrypt wait,check,formattable,quota,latemount,resize,readahead_size_kb=512,reservedsize=128m,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption,fsverity
+/dev/block/by-name/userdata /data f2fs noatime,nosuid,nodev,discard wait,check,formattable,latemount
 
-# =====================================================
-# TRANSSION
-# =====================================================
+# =========================
+# BASIC TRANFS (SAFE ONLY IF USED)
+# =========================
 
-/dev/block/by-name/tranfs /tranfs ext4 noatime,nosuid,nodev,noauto_da_alloc,discard wait,check,formattable,nofail,first_stage_mount
+/dev/block/by-name/tranfs /tranfs ext4 noatime,nosuid,nodev,discard wait,check,formattable,nofail
 
-# =====================================================
-# MTK PERSISTENT PARTITIONS
-# =====================================================
+# =========================
+# PERSISTENT MTK (REMOVE FIRST STAGE MOUNTING)
+# =========================
 
-/dev/block/by-name/protect1 /mnt/vendor/protect_f ext4 noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc wait,check,formattable
-/dev/block/by-name/protect2 /mnt/vendor/protect_s ext4 noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc wait,check,formattable
-/dev/block/by-name/nvdata /mnt/vendor/nvdata ext4 noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc wait,check,formattable
-/dev/block/by-name/nvcfg /mnt/vendor/nvcfg ext4 noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc wait,check,formattable
-/dev/block/by-name/persist /mnt/vendor/persist ext4 noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc wait,check,formattable
+/dev/block/by-name/protect1 /mnt/vendor/protect_f ext4 noatime,nosuid,nodev,commit=1,nodelalloc wait,check,formattable
+/dev/block/by-name/protect2 /mnt/vendor/protect_s ext4 noatime,nosuid,nodev,commit=1,nodelalloc wait,check,formattable
+/dev/block/by-name/nvdata /mnt/vendor/nvdata ext4 noatime,nosuid,nodev,commit=1,nodelalloc wait,check,formattable
+/dev/block/by-name/nvcfg /mnt/vendor/nvcfg ext4 noatime,nosuid,nodev,commit=1,nodelalloc wait,check,formattable
+/dev/block/by-name/persist /mnt/vendor/persist ext4 noatime,nosuid,nodev,commit=1,nodelalloc wait,check,formattable
 
-# =====================================================
-# EXTERNAL STORAGE
-# =====================================================
+# =========================
+# RAW PARTITIONS (NO FIRST STAGE MOUNT)
+# =========================
 
-/devices/platform/11240000.mmc* auto auto defaults voldmanaged=sdcard1:auto,encryptable=userdata
-
-/devices/platform/mt_usb* auto vfat defaults voldmanaged=usbotg:auto,encryptable=userdata
-
-# =====================================================
-# RAW PARTITIONS
-# =====================================================
-
-/dev/block/by-name/frp /persistent emmc defaults defaults
-
+/dev/block/by-name/frp /frp emmc defaults defaults
 /dev/block/by-name/nvram /nvram emmc defaults defaults
 /dev/block/by-name/proinfo /proinfo emmc defaults defaults
-/dev/block/by-name/lk_a /bootloader emmc defaults defaults
-/dev/block/by-name/lk_b /bootloader2 emmc defaults defaults
 /dev/block/by-name/misc /misc emmc defaults defaults
 /dev/block/by-name/para /para emmc defaults defaults
-
-/dev/block/by-name/vendor_boot_a /vendor_boot emmc defaults defaults
-/dev/block/by-name/vendor_boot_b /vendor_boot_b emmc defaults defaults
-
-/dev/block/by-name/boot_a /boot emmc defaults first_stage_mount,nofail,slotselect
-/dev/block/by-name/boot_b /boot_b emmc defaults first_stage_mount,nofail,slotselect
-
-/dev/block/by-name/vbmeta_vendor_a /vbmeta_vendor emmc defaults first_stage_mount,nofail,slotselect
-/dev/block/by-name/vbmeta_vendor_b /vbmeta_vendor_b emmc defaults first_stage_mount,nofail,slotselect
-
-/dev/block/by-name/vbmeta_system_a /vbmeta_system emmc defaults first_stage_mount,nofail,slotselect,avb=vbmeta
-/dev/block/by-name/vbmeta_system_b /vbmeta_system_b emmc defaults first_stage_mount,nofail,slotselect,avb=vbmeta
-
-/dev/block/by-name/logo_a /logo emmc defaults defaults
-/dev/block/by-name/logo_b /logo_b emmc defaults defaults
-
-/dev/block/by-name/expdb /expdb emmc defaults defaults
-/dev/block/by-name/seccfg /seccfg emmc defaults defaults
-
-/dev/block/by-name/tee_a /tee1 emmc defaults defaults
-/dev/block/by-name/tee_b /tee2 emmc defaults defaults
-
-/dev/block/by-name/scp_a /scp1 emmc defaults defaults
-/dev/block/by-name/scp_b /scp2 emmc defaults defaults
-
-/dev/block/by-name/sspm_a /sspm_1 emmc defaults defaults
-/dev/block/by-name/sspm_b /sspm_2 emmc defaults defaults
-
-/dev/block/by-name/md1img_a /md1img emmc defaults defaults
-/dev/block/by-name/md1img_b /md1img_b emmc defaults defaults
-
-/dev/block/by-name/gz_a /gz1 emmc defaults defaults
-/dev/block/by-name/gz_b /gz2 emmc defaults defaults
-
-/dev/block/by-name/spmfw_a /spmfw emmc defaults defaults
-/dev/block/by-name/spmfw_b /spmfw_b emmc defaults defaults
-
-/dev/block/by-name/boot_para /boot_para emmc defaults defaults
-
-/dev/block/by-name/dtbo_a /dtbo emmc defaults defaults
-/dev/block/by-name/dtbo_b /dtbo_b emmc defaults defaults
-
-/dev/block/by-name/otp /otp emmc defaults defaults
-
-/dev/block/by-name/vbmeta_a /vbmeta emmc defaults defaults
-/dev/block/by-name/vbmeta_b /vbmeta_b emmc defaults defaults
-
-/dev/block/by-name/tkv_a /tkv emmc defaults defaults
-/dev/block/by-name/tkv_b /tkv_b emmc defaults defaults
-
-# =====================================================
-# TRANSSION DYNAMIC PARTITIONS
-# =====================================================
-
-tr_mi /tr_mi ext4 ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-tr_mi /tr_mi erofs ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-
-tr_theme /tr_theme ext4 ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-tr_theme /tr_theme erofs ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-
-tr_region /tr_region ext4 ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-tr_region /tr_region erofs ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-
-tr_company /tr_company ext4 ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-tr_company /tr_company erofs ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-
-tr_carrier /tr_carrier ext4 ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-tr_carrier /tr_carrier erofs ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-
-tr_product /tr_product ext4 ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-tr_product /tr_product erofs ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-
-tr_preload /tr_preload ext4 ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-tr_preload /tr_preload erofs ro wait,slotselect,logical,first_stage_mount,avb_keys=/vendor/etc/tran_avb.pubkey,nofail
-```
