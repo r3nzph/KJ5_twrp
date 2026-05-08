@@ -1,8 +1,16 @@
 #change partition permission
-/dev/block/mmcblk0                                              0660    root    system
-/dev/block/mmcblk0boot0                                         0660    root    system
-/dev/block/mmcblk0boot1                                         0660    root    system
-/dev/misc-sd                                                    0660    root    system
+# eMMC only
+/dev/block/mmcblk0                               0660    root    system
+/dev/block/mmcblk0boot0                          0660    root    system
+/dev/block/mmcblk0boot1                          0660    root    system
+/dev/misc-sd                                     0660    root    system
+
+# UFS only
+/dev/block/sda                                   0660    root    system
+/dev/block/sdb                                   0660    root    system
+/dev/block/sdc                                   0660    root    system
+
+# eMMC/UFS common
 /dev/block/by-name/misc2     0660    root    system
 /dev/block/by-name/boot      0640    root    system
 /dev/block/by-name/recovery  0640    root    system
@@ -14,7 +22,6 @@
 /dev/block/by-name/logo      0660    root    system
 /dev/block/by-name/frp       0660    root    system
 /dev/block/by-name/md1img    0640    root    system
-/dev/block/by-name/md1img_1  0640    root    system
 /dev/block/by-name/md1img_a  0640    root    system
 /dev/block/by-name/md1img_b  0640    root    system
 /dev/block/by-name/md1dsp    0660    root    system
@@ -28,17 +35,22 @@
 /dev/stpwmt               0660   system     system
 /dev/wmtdetect            0660   system     system
 /dev/fw_log_wmt           0660   system     system
+/dev/conninfra_dev        0660   system     system
+/dev/conn_pwr_dev         0660   system     system
 
 # BT
 /dev/stpbt                0660   bluetooth  bluetooth
 /dev/fw_log_bt            0660   bluetooth  bluetooth
 
 # GPS
+/dev/gpsdl0               0660   gps        gps
+/dev/gpsdl1               0660   gps        gps
 /dev/stpgps               0660   gps        gps
 /dev/gps                  0660   gps        system
-/dev/fw_log_gps           0660   gps        gps
 /dev/gps_emi              0660   gps        gps
-
+/dev/gps2scp              0660   gps        gps
+/dev/gps_pwr              0660   gps        gps
+/dev/fw_log_gps           0660   gps        gps
 # ANT
 /dev/stpant               0660   system     system
 
@@ -47,9 +59,8 @@
 /dev/fw_log_wifi          0660   wifi     wifi
 
 # FMRadio
-#TCD:add XLJLHLJYR-21 for dev/fm by shouhui.li 20200810 start
+# NFBD:modify  for dev/fm 0660->0666 by yuguo.zhang 20220406
 /dev/fm                   0666   media     media
-#TCD:add XLJLHLJYR-21 for dev/fm by shouhui.li 20200810 end
 
 # NFC
 /dev/st21nfc              0660   nfc        radio
@@ -70,45 +81,29 @@
 /dev/mobicore-user        0666   system     system
 /dev/t-base-tui           0666   system     system
 
-#BSP: add ultrasound support CILHLJYQ-4 by yu.xiang5 20220126 start
-#elliptic sensor
-/dev/elliptic0            0644   system     system
-/dev/elliptic1            0644   system     system
-#BSP: add ultrasound support CILHLJYQ-4 by yu.xiang5 20220126 end
+# teeperf driver
+/dev/teeperf              0666   system     system
 
-#MDP
-/dev/mt-mdp               0660   system     media
-/dev/mtk_mdp              0660   system     system
-/dev/mdp_sync             0660   system     system
+#v4l2 device
+/dev/video*      0660 camera system
+/dev/media*      0660 camera system
+/dev/v4l-subdev* 0660 camera system
 
-#ITD: Modify ATA Test Witchout Witchout Permission By fei.wu5 230317 start
-#Camera
-#/dev/camera-sysram        0660   system     camera
-#/dev/camera-mem           0660   system     camera
-#/dev/camera-isp           0660   system     camera
-#/dev/camera-dip           0660   system     camera
-#/dev/camera-tsf           0660   system     camera
-#/dev/camera-dpe           0660   system     camera
-#/dev/camera-mfb           0660   system     camera
-#/dev/camera-rsc           0660   system     camera
-#/dev/camera-owe           0660   system     camera
-#/dev/camera-fdvt          0660   system     camera
-#/dev/camera-wpe           0660   system     camera
-#/dev/camera-pipemgr       0660   system     camera
-#/dev/kd_camera_hw         0660   system     camera
-#/dev/seninf               0660   system     camera
-#/dev/flashlight           0660   system     camera
-#/dev/kd_camera_hw_bus2    0660   system     camera
-#/dev/FM50AF               0660   system     camera
-#/dev/CAM_CAL_DRV          0660   system     camera
-#/dev/MAINAF               0660   system     camera
-#/dev/MAIN2AF              0660   system     camera
-#/dev/SUBAF                0660   system     camera
-#/dev/vpu                  0660   system     camera
+#v4l2 codec
+/dev/vcu    0660 camera system
 
-#CCU
-#/dev/ccu                  0660   system     camera
-#ITD: Modify ATA Test Witchout Witchout Permission By fei.wu5 230317 End
+#vdec-fmt
+/dev/vdec-fmt   0660 media system
+/dev/fmt_sync   0660 system system
+
+#v4l2 camera
+/dev/mtk_hcp     0660 camera system
+
+# DRM node
+/dev/dri/card0            0660   system     system
+
+# MDDP node
+/dev/mddp                 0660   system     system
 
 # add the read write right of ttyUSB*
 /dev/bus/usb/*     	  0660   root       usb
@@ -151,16 +146,12 @@
 /sys/devices/platform/leds-mt65xx/leds/red   delay_off      0664  system   system
 /sys/devices/platform/leds-mt65xx/leds/blue   delay_on      0664  system   system
 /sys/devices/platform/leds-mt65xx/leds/blue   delay_off      0664  system   system
-/sys/class/leds/green   delay_on      0664  system   system
-/sys/class/leds/green   delay_off      0664  system   system
-/sys/class/leds/red   delay_on      0664  system   system
-/sys/class/leds/red   delay_off      0664  system   system
-/sys/class/leds/blue   delay_on      0664  system   system
-/sys/class/leds/blue   delay_off      0664  system   system
 
 #GPIO
 /dev/mtgpio               0600   radio      root
 
+# Camera
+/dev/camera_eeprom*       0660   system     camera
 
 #FOR VIA MODEM
 /dev/ttySDIO*             0660   radio      sdcard_rw
@@ -188,6 +179,10 @@
 /dev/dma_heap/mtk_wfd_region                        0444   system     system
 /dev/dma_heap/mtk_wfd_region-aligned                0444   system     system
 /dev/dma_heap/mtk_wfd_page-uncached                 0444   system     system
+/dev/dma_heap/mtk_sapu_data_shm_region              0444   system     system
+/dev/dma_heap/mtk_sapu_data_shm_region-aligned      0444   system     system
+/dev/dma_heap/mtk_sapu_engine_shm_region            0444   system     system
+/dev/dma_heap/mtk_sapu_engine_shm_region-aligned    0444   system     system
 
 #touch
 /dev/touch                0660   root       system
@@ -199,12 +194,3 @@
 
 #MTK In-House TEE
 /dev/ttyACM0              0660   radio      radio
-
-# Resume-on-Reboot
-/dev/access-kregistry     0660   system     system
-
-#v4l2 device
-/dev/video*  0660 media system
-
-#VideoCodec
-/dev/vcu 0660 media system
