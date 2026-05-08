@@ -3,6 +3,9 @@
 # =========================
 DEVICE_PATH := device/tecno/KJ5
 
+# For building with minimal manifest
+ALLOW_MISSING_DEPENDENCIES := true
+
 # =========================
 # Architecture
 # =========================
@@ -18,169 +21,114 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a53
 
-TARGET_SUPPORTS_64_BIT_APPS := true
-TARGET_IS_64_BIT := true
 TARGET_USES_64_BIT_BINDER := true
+ENABLE_CPUSETS := true
+ENABLE_SCHEDBOOST := true
 
-BOARD_USES_MTK_HARDWARE := true
+# Device identity
+TARGET_OTA_ASSERT_DEVICE := KJ5
 
-# =========================
+# Platform
+TARGET_BOARD_PLATFORM := mt6768
+
 # Bootloader
-# =========================
 TARGET_BOOTLOADER_BOARD_NAME := KJ5
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 
-# =========================
-# Build Fixes
-# =========================
-BUILD_BROKEN_DUP_RULES := true
-BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
-ALLOW_MISSING_DEPENDENCIES := true
-
-# =========================
-# Dynamic Partitions
-# =========================
-TARGET_COPY_OUT_VENDOR := vendor
-TARGET_COPY_OUT_PRODUCT := product
-TARGET_COPY_OUT_SYSTEM_EXT := system_ext
-
-# =========================
-# Display / UI (FIXED)
-# =========================
-TARGET_SCREEN_WIDTH := 720
-TARGET_SCREEN_HEIGHT := 1612
-TARGET_SCREEN_DENSITY := 320
-
-TW_THEME := portrait_hdpi
-
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-
-TW_STATUS_ICONS_ALIGN := center
-
-TW_SCREEN_BLANK_ON_BOOT := true
-TW_NO_SCREEN_BLANK := true
-TW_NO_SCREEN_TIMEOUT := true
-
-TW_USE_NEW_MINADBD := true
-
-# IMPORTANT:
-# REMOVE BAD SCALING VALUES
-# DO NOT USE portrait_xhdpi
-# DO NOT USE TW_RESOLUTION
-# DO NOT USE TW_FRAMERATE
-
-TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
-TW_MAX_BRIGHTNESS := 255
-TW_DEFAULT_BRIGHTNESS := 120
-
-# =========================
-# Device
-# =========================
-TARGET_OTA_ASSERT_DEVICE := KJ5
-
-# =========================
-# Kernel (PREBUILT)
-# =========================
-TARGET_NO_KERNEL := false
-TARGET_FORCE_PREBUILT_KERNEL := true
-
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
-
-BOARD_KERNEL_IMAGE_NAME := kernel
-
-BOARD_RAMDISK_USE_LZ4 := true
-BOARD_USES_GENERIC_KERNEL_IMAGE := false
-
-# =========================
-# Boot Image
-# =========================
-BOARD_BOOT_HEADER_VERSION := 4
-
-BOARD_KERNEL_BASE := 0x40078000
-BOARD_KERNEL_OFFSET := 0x00008000
-BOARD_RAMDISK_OFFSET := 0x07c08000
-BOARD_KERNEL_TAGS_OFFSET := 0x0bc08000
-BOARD_DTB_OFFSET := 0x0bc08000
-
-BOARD_PAGE_SIZE := 4096
-
-BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
-
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE)
-BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --vendor_cmdline "$(BOARD_VENDOR_CMDLINE)"
-BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
-
-# =========================
 # DTBO
-# =========================
 BOARD_KERNEL_SEPARATED_DTBO := true
 
-# =========================
+# Kernel
+BOARD_RAMDISK_USE_LZ4 := true
+TARGET_NO_KERNEL := true
+
+BOARD_BOOT_HEADER_VERSION := 4
+BOARD_KERNEL_BASE := 0x3fff8000
+BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
+BOARD_PAGE_SIZE := 4096
+BOARD_KERNEL_OFFSET := 0x00008000
+BOARD_RAMDISK_OFFSET := 0x07c08000
+BOARD_TAGS_OFFSET := 0x0bc08000
+BOARD_DTB_OFFSET := 0x0bc08000
+
+# Prebuilt DTB
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+
+BOARD_MKBOOTIMG_ARGS += --vendor_cmdline $(BOARD_VENDOR_CMDLINE)
+BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE) --board ""
+BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_TAGS_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
+
+# Debug
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+
+# Hardware
+BOARD_USES_MTK_HARDWARE := true
+
+# Build hacks
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+
 # Partitions
-# =========================
-BOARD_FLASH_BLOCK_SIZE := 262144
-
+BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
+BOARD_BOOTIMAGE_PARTITION_SIZE := 41943040
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
+BOARD_HAS_LARGE_FILESYSTEM := true
 
+BOARD_SUPER_PARTITION_SIZE := 9122611200
 BOARD_SUPER_PARTITION_GROUPS := main
+BOARD_MAIN_PARTITION_LIST := system vendor product system_ext
 BOARD_MAIN_SIZE := 9122611200
-BOARD_SUPER_PARTITIONS_SIZE := 9122611200
 
-BOARD_MAIN_PARTITION_LIST += \
-    system \
-    system_ext \
-    product \
-    vendor
-
-# =========================
-# Filesystems
-# =========================
-BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-
+# Filesystem layout
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := erofs
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := erofs
+BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := erofs
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := erofs
 
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-BOARD_USES_METADATA_PARTITION := true
+TARGET_COPY_OUT_PRODUCT := product
+TARGET_COPY_OUT_SYSTEM := system
+TARGET_COPY_OUT_SYSTEM_EXT := system_ext
+TARGET_COPY_OUT_VENDOR := vendor
 
-BOARD_SUPPRESS_SECURE_ERASE := true
-BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_ROOT_EXTRA_FOLDERS += metadata
-
-# =========================
-# Platform
-# =========================
-TARGET_BOARD_PLATFORM := mt6768
-BOARD_VNDK_VERSION := current
-
-# =========================
 # Recovery
-# =========================
 TARGET_NO_RECOVERY := true
-
-BOARD_USES_RECOVERY_AS_VENDOR_BOOT := true
-
-BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
-BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
-
-TW_INCLUDE_LOGICAL := true
-
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
+BOARD_HAS_NO_SELECT_BUTTON := true
+TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
+BOARD_SUPPRESS_SECURE_ERASE := true
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
-BOARD_HAS_NO_SELECT_BUTTON := true
+# Properties
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
-TARGET_RECOVERY_UI_LIB := librecovery_ui_default
+# Treble
+BOARD_VNDK_VERSION := current
+
+# Security patch level
+PLATFORM_VERSION := 99.87.36
+PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+
+# Crypto
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+BOARD_USES_METADATA_PARTITION := true
+TW_USE_FSCRYPT_POLICY := 2
+TW_FORCE_KEYMASTER_VER := true
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
@@ -191,77 +139,60 @@ BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
-# Crypto
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-TW_USE_FSCRYPT_POLICY := 2
-TW_FORCE_KEYMASTER_VER := true
+# Screen
+TARGET_SCREEN_WIDTH := 720
+TARGET_SCREEN_HEIGHT := 1612
 
-# Hack
-PLATFORM_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 99.87.36
-PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
-VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-
-# =========================
-# Debug
-# =========================
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
-TWRP_EVENT_LOGGING := true
-
-# =========================
-# Storage / MTP / OTG
-# =========================
-RECOVERY_SDCARD_ON_DATA := true
-
-TW_HAS_MTP := true
-TW_MTP_DEVICE := /dev/mtp_usb
-
-TW_USES_OTG_USB := true
-
-# IMPORTANT FIX
-TW_NO_USB_STORAGE := false
-TW_INCLUDE_FUSE_EXFAT := true
-TW_INCLUDE_NTFS_3G := true
-TW_INCLUDE_EXFAT := true
-
-# Screenshot fix
-TW_SCREENSHOT_PATH := /data/media/0/Pictures/Screenshots
-
-# =========================
-# Tools
-# =========================
-TW_INCLUDE_RESETPROP := true
-TW_INCLUDE_LPTOOLS := true
-TW_INCLUDE_FB2PNG := true
-
+# TWRP
+TW_EXTRA_LANGUAGES := true
 TARGET_USES_MKE2FS := true
 
-TW_USE_TOOLBOX := true
+TW_FRAMERATE := 90
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.usb0/lun.%d/file"
+TW_MAX_BRIGHTNESS := 4095
+TW_DEFAULT_BRIGHTNESS := 1200
+TW_NO_SCREEN_BLANK := true
+TW_THEME := portrait_hdpi
 
-# =========================
-# Extra UI
-# =========================
-TW_ALLOW_FORMAT_DATA := true
-TW_EXTRA_LANGUAGES := true
+# Tools
+TW_INCLUDE_FB2PNG := true
+TW_INCLUDE_NTFS_3G := true
+TW_INCLUDE_REPACKTOOLS := true
+TW_INCLUDE_LIBRESETPROP := true
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_LPTOOLS := true
+TW_EXCLUDE_LPDUMP := true
 TW_EXCLUDE_APEX := true
-TW_NO_LEGACY_PROPS := true
 
-# =========================
-# Props
-# =========================
-TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
+# Recovery-as-boot
+TW_HAS_NO_RECOVERY_PARTITION := true
 
-# =========================
-# Thermal
-# =========================
-TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone4/temp
+# Status bar
+TW_STATUS_ICONS_ALIGN := center
+TW_CUSTOM_CLOCK_POS := 40
+TW_CUSTOM_CPU_POS := 270
 
-# =========================
-# Device Info
-# =========================
-TW_DEVICE_VERSION := KJ5
+# FastbootD
+TW_INCLUDE_FASTBOOTD := true
+
+# USB Configuration
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+
+# USB OTG
+TW_USB_STORAGE := true
+
+# Vendor boot
+BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := true
+BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+
+# Vendor modules
+TW_LOAD_VENDOR_BOOT_MODULES := true
+
+# Version
+TW_DEVICE_VERSION := nino
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+
+# Init
+TARGET_INIT_VENDOR_LIB := libinit_tecno-KJ5
+TARGET_RECOVERY_DEVICE_MODULES := libinit_tecno-KJ5
