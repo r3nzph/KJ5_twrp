@@ -46,29 +46,20 @@ TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 
 # =========================
-# Display / UI (FIXED)
+# Display / UI
 # =========================
 TARGET_SCREEN_WIDTH := 720
 TARGET_SCREEN_HEIGHT := 1612
 TARGET_SCREEN_DENSITY := 320
 
 TW_THEME := portrait_hdpi
-
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
 TW_STATUS_ICONS_ALIGN := center
-
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_NO_SCREEN_BLANK := true
 TW_NO_SCREEN_TIMEOUT := true
-
 TW_USE_NEW_MINADBD := true
-
-# IMPORTANT:
-# REMOVE BAD SCALING VALUES
-# DO NOT USE portrait_xhdpi
-# DO NOT USE TW_RESOLUTION
-# DO NOT USE TW_FRAMERATE
 
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
@@ -80,7 +71,7 @@ TW_DEFAULT_BRIGHTNESS := 120
 TARGET_OTA_ASSERT_DEVICE := KJ5
 
 # =========================
-# Kernel (PREBUILT)
+# Kernel
 # =========================
 TARGET_NO_KERNEL := false
 TARGET_FORCE_PREBUILT_KERNEL := true
@@ -91,7 +82,6 @@ TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_KERNEL_IMAGE_NAME := kernel
 
 BOARD_RAMDISK_USE_LZ4 := true
-BOARD_USES_GENERIC_KERNEL_IMAGE := false
 
 # =========================
 # Boot Image
@@ -146,16 +136,12 @@ BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
 BOARD_USES_METADATA_PARTITION := true
-
-BOARD_SUPPRESS_SECURE_ERASE := true
-BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata
 
 # =========================
@@ -170,67 +156,52 @@ BOARD_VNDK_VERSION := current
 TARGET_NO_RECOVERY := true
 
 BOARD_USES_RECOVERY_AS_VENDOR_BOOT := true
-
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 
 TW_INCLUDE_LOGICAL := true
-
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
-BOARD_HAS_NO_SELECT_BUTTON := true
+# =========================
+# CRYPTO (FIXED MINIMAL ADDITION)
+# =========================
 
-TARGET_RECOVERY_UI_LIB := librecovery_ui_default
-
-# Verified Boot
-BOARD_AVB_ENABLE := true
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
-BOARD_AVB_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
-BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
-BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
-
-# Crypto
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
+
+# 🔥 ADDED (this is what you were missing for MTK A13)
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+TW_INCLUDE_CRYPTO_METADATA := true
+
 TW_USE_FSCRYPT_POLICY := 2
-TW_FORCE_KEYMASTER_VER := true
 
-# Hack
-PLATFORM_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 99.87.36
-PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
-VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+# ⚠️ removed forcing keymaster version (breaks MTK Trustonic trees)
+# TW_FORCE_KEYMASTER_VER := true
 
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+# =========================
+# Verified Boot
+# =========================
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+
+BOARD_AVB_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 
 # =========================
 # Debug
 # =========================
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
-TWRP_EVENT_LOGGING := true
 
 # =========================
-# Storage / MTP / OTG
+# Storage
 # =========================
 RECOVERY_SDCARD_ON_DATA := true
-
 TW_HAS_MTP := true
-TW_MTP_DEVICE := /dev/mtp_usb
-
 TW_USES_OTG_USB := true
 
-# IMPORTANT FIX
 TW_NO_USB_STORAGE := false
-TW_INCLUDE_FUSE_EXFAT := true
-TW_INCLUDE_NTFS_3G := true
 TW_INCLUDE_EXFAT := true
-
-# Screenshot fix
-TW_SCREENSHOT_PATH := /data/media/0/Pictures/Screenshots
+TW_INCLUDE_NTFS_3G := true
 
 # =========================
 # Tools
@@ -240,26 +211,15 @@ TW_INCLUDE_LPTOOLS := true
 TW_INCLUDE_FB2PNG := true
 
 TARGET_USES_MKE2FS := true
-
 TW_USE_TOOLBOX := true
 
 # =========================
-# Extra UI
+# UI Extras
 # =========================
 TW_ALLOW_FORMAT_DATA := true
 TW_EXTRA_LANGUAGES := true
 TW_EXCLUDE_APEX := true
 TW_NO_LEGACY_PROPS := true
-
-# =========================
-# Props
-# =========================
-TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
-
-# =========================
-# Thermal
-# =========================
-TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone4/temp
 
 # =========================
 # Device Info
