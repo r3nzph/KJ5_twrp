@@ -1,6 +1,3 @@
-import /init.decrypt.rc
-import /vibrator-KJ5.rc
-
 on post-fs 
     start boot-hal-1-2
 
