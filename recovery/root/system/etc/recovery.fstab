@@ -1,53 +1,24 @@
-# =========================
-# Dynamic Partitions
-# =========================
-/system       erofs   system      logical,slotselect,first_stage_mount,wait
-/system_ext   erofs   system_ext  logical,slotselect,first_stage_mount,wait
-/vendor       erofs   vendor      logical,slotselect,first_stage_mount,wait
-/product      erofs   product     logical,slotselect,first_stage_mount,wait
+# Dynamic partitions (read-only, A/B safe)
+system      /system      ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
+system_ext  /system_ext  ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
+vendor      /vendor      ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
+product     /product     ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
 
+# Metadata (required for Android 12/13 FBE)
+/dev/block/by-name/md_udc   /metadata   ext4    noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
 
-# =========================
-# Metadata (CRITICAL for Android 13)
-# =========================
-/dev/block/by-name/md_udc   /metadata   ext4   noatime,nosuid,nodev,discard   wait,check,formattable,first_stage_mount
+# Data (NO encryption flags — non-decrypting setup)
+/dev/block/by-name/userdata   /data   ext4    noatime,nosuid,nodev,discard    wait,check,formattable,quota,first_stage_mount
 
+# Vendor-related persistent partitions (MTK specific)
+/dev/block/by-name/persist    /mnt/vendor/persist    ext4    noatime,nosuid,nodev    wait,check,formattable
+/dev/block/by-name/nvdata     /mnt/vendor/nvdata     ext4    noatime,nosuid,nodev    wait,check,formattable
+/dev/block/by-name/nvcfg      /mnt/vendor/nvcfg      ext4    noatime,nosuid,nodev    wait,check,formattable
+/dev/block/by-name/protect1   /mnt/vendor/protect_f   ext4    noatime,nosuid,nodev    wait,check,formattable
+/dev/block/by-name/protect2   /mnt/vendor/protect_s   ext4    noatime,nosuid,nodev    wait,check,formattable
 
-# =========================
-# Data (NO DECRYPTION YET)
-# =========================
-/dev/block/by-name/userdata  /data  f2fs  noatime,nosuid,nodev,discard  wait,check,formattable,latemount,quota
-
-
-# =========================
-# Vendor persistence (MTK)
-# =========================
-/dev/block/by-name/persist   /mnt/vendor/persist   ext4  noatime,nosuid,nodev   wait,check,formattable
-/dev/block/by-name/nvdata    /mnt/vendor/nvdata    ext4  noatime,nosuid,nodev   wait,check,formattable
-/dev/block/by-name/nvcfg     /mnt/vendor/nvcfg     ext4  noatime,nosuid,nodev   wait,check,formattable
-/dev/block/by-name/protect1  /mnt/vendor/protect_f ext4  noatime,nosuid,nodev   wait,check,formattable
-/dev/block/by-name/protect2  /mnt/vendor/protect_s ext4  noatime,nosuid,nodev   wait,check,formattable
-
-
-# =========================
-# Boot / Flash partitions
-# =========================
-/dev/block/by-name/boot          /boot          emmc  defaults  slotselect
-/dev/block/by-name/vendor_boot   /vendor_boot   emmc  defaults
-/dev/block/by-name/dtbo          /dtbo          emmc  defaults
-/dev/block/by-name/vbmeta        /vbmeta        emmc  defaults
-
-
-# =========================
-# Storage devices
-# =========================
-/devices/platform/11240000.mmc*  auto  auto  defaults  voldmanaged=sdcard1:auto
-/devices/platform/mt_usb*        auto  vfat  defaults  voldmanaged=usbotg:auto
-
-
-# =========================
-# MTK special partitions (optional but safe)
-# =========================
-/dev/block/by-name/frp     /persistent   emmc  defaults
-/dev/block/by-name/nvram   /nvram        emmc  defaults
-/dev/block/by-name/proinfo /proinfo      emmc  defaults
+# Boot-related partitions (for flashing)
+/dev/block/by-name/boot          /boot          emmc    defaults
+/dev/block/by-name/vendor_boot   /vendor_boot   emmc    defaults
+/dev/block/by-name/dtbo          /dtbo          emmc    defaults
+/dev/block/by-name/vbmeta        /vbmeta        emmc    defaults
