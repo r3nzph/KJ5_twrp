@@ -1,4 +1,4 @@
-### OFRP device tree for tecno spark 20 (KJ5)
+### TWRP device tree for tecno spark 20 (KJ5)
 
 =========================================
 
@@ -23,11 +23,11 @@ Display | 720 x 1612 pixels, 6.6 inches, 60/90 hz
 
 Works:
 
-- [X] ADB
+- [ ] ADB
 - [ ] Decryption
 - [X] Display
 - [X] Flashing
-- [X] MTP
+- [ ] MTP
 - [X] Sideload
-- [X] USB OTG
+- [ ] USB OTG
 - [ ] Vibrator
