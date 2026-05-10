@@ -137,6 +137,9 @@ TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LPTOOLS := true
 TW_INCLUDE_LIBRESETPROP := true
 TW_USE_TOOLBOX := true
+TW_INCLUDE_FUSE_EXFAT := true
+TW_INCLUDE_EXFAT := true
+
 
 # Debug
 TWRP_INCLUDE_LOGCAT := true
@@ -166,9 +169,19 @@ TW_INCLUDE_FASTBOOTD := true
 # REMOVE DIRECT MTP DEVICE (CAUSES FREEZE ON MTK)
 # TW_MTP_DEVICE := /dev/mtp_usb
 
+# Screenshot path to SD card
+TW_SCREENSHOT_PATH := /external_sd/Pictures/Screenshots
+
 # Storage
 RECOVERY_SDCARD_ON_DATA := true
 BOARD_HAS_NO_REAL_SDCARD := false
+
+# =========================
+# Extra UI
+# =========================
+TW_ALLOW_FORMAT_DATA := true
+TW_EXCLUDE_APEX := true
+TW_NO_LEGACY_PROPS := true
 
 # TEMP SENSOR
 TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone4/temp
