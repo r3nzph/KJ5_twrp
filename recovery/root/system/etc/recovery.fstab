@@ -1,4 +1,3 @@
-hers my recovery.fstab
 # Dynamic partitions (read-only, A/B safe)
 system      /system      ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
 system_ext  /system_ext  ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
@@ -23,3 +22,9 @@ product     /product     ext4    ro,barrier=1    wait,logical,first_stage_mount,
 /dev/block/by-name/vendor_boot   /vendor_boot   emmc    defaults
 /dev/block/by-name/dtbo          /dtbo          emmc    defaults
 /dev/block/by-name/vbmeta        /vbmeta        emmc    defaults
+
+# External SD Card
+/dev/block/mmcblk1p1    /external_sd    vfat    rw,discard    wait,voldmanaged=sdcard1:auto,storage;wipeingui;removable
+
+# USB OTG
+/dev/block/sda1         /usb-otg        auto    rw            wait,voldmanaged=usb:auto,storage;wipeingui;removable
