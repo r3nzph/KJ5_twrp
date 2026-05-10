@@ -168,6 +168,7 @@ TW_INCLUDE_FASTBOOTD := true
 
 # Storage
 RECOVERY_SDCARD_ON_DATA := true
+BOARD_HAS_NO_REAL_SDCARD := false
 
 # TEMP SENSOR
 TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone4/temp
