@@ -140,7 +140,6 @@ TW_USE_TOOLBOX := true
 TW_INCLUDE_FUSE_EXFAT := true
 TW_INCLUDE_EXFAT := true
 
-
 # Debug
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
@@ -152,8 +151,10 @@ TW_THEME := portrait_hdpi
 TW_SCREEN_BLANK_ON_BOOT := false
 TW_NO_SCREEN_BLANK := true
 
-# USB / ADB / MTP
-TW_NO_USB_STORAGE := true
+#TMP
+TW_HAS_MTP := true
+TW_MTP_DEVICE := "mtp_usb"
+TW_USE_LEGACY_USB_INIT := true
 
 # Removed temporarily — likely breaking ADB/MTP initialization on MTK
 # TW_EXCLUDE_DEFAULT_USB_INIT := true
@@ -166,14 +167,11 @@ TW_USE_NEW_MINADBD := true
 TW_LOAD_VENDOR_BOOT_MODULES := true
 # TW_INCLUDE_FASTBOOTD := true
 
-# REMOVE DIRECT MTP DEVICE (CAUSES FREEZE ON MTK)
-# TW_MTP_DEVICE := /dev/mtp_usb
-
 # Screenshot path to SD card
-TW_SCREENSHOT_PATH := /external_sd/Pictures/Screenshots
+TW_SCREENSHOT_PATH := /storage/sdcard1/Pictures/Screenshots
 
 # Persistent logs on SD card
-TWRP_LOG_PATH := /external_sd/TWRP
+TWRP_LOG_PATH := /storage/sdcard1/TWRP
 
 # Storage
 RECOVERY_SDCARD_ON_DATA := true
