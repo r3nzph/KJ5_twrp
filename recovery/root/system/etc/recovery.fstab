@@ -1,30 +1,55 @@
-# Dynamic Partitions (Android 12/13 Dynamic Super)
+# =========================
+# Dynamic Partitions (A/B, Android 12/13)
+# =========================
 system         /system              erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
 system_ext     /system_ext          erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
 vendor         /vendor              erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
 product        /product             erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
 
-# Metadata
+# =========================
+# Metadata / Data
+# =========================
 /dev/block/by-name/metadata         /metadata             ext4     noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
 
-# Data
-/dev/block/by-name/userdata         /data                 f2fs     noatime,nosuid,nodev,discard,inlinecrypt    wait,check,formattable,quota,latemount,first_stage_mount
+/dev/block/by-name/userdata         /data                 f2fs     noatime,nosuid,nodev,discard,inlinecrypt,fsync_mode=nobarrier,reserve_root=134217,resgid=1065    wait,check,formattable,quota,latemount,resize,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2
 
-# Persistent MTK partitions
+# =========================
+# MTK Persistent partitions
+# =========================
 /dev/block/by-name/persist          /mnt/vendor/persist   ext4     noatime,nosuid,nodev            wait,check,formattable
 /dev/block/by-name/nvdata           /mnt/vendor/nvdata    ext4     noatime,nosuid,nodev            wait,check,formattable
 /dev/block/by-name/nvcfg            /mnt/vendor/nvcfg     ext4     noatime,nosuid,nodev            wait,check,formattable
 /dev/block/by-name/protect1         /mnt/vendor/protect_f ext4     noatime,nosuid,nodev            wait,check,formattable
 /dev/block/by-name/protect2         /mnt/vendor/protect_s ext4     noatime,nosuid,nodev            wait,check,formattable
 
-# Boot related
+# =========================
+# Boot / Firmware
+# =========================
 /dev/block/by-name/boot_a           /boot                 emmc     defaults
 /dev/block/by-name/vendor_boot_a    /vendor_boot          emmc     defaults
 /dev/block/by-name/dtbo_a           /dtbo                 emmc     defaults
 /dev/block/by-name/vbmeta_a         /vbmeta               emmc     defaults
 
-# External SD Card
-/dev/block/mmcblk1p1    /external_sd    auto    rw    wait,storage,removable
+# =========================
+# 🔥 FIXED: External Storage (MTK vold-managed - REQUIRED)
+# =========================
+/devices/platform/externdevice*      auto    auto    defaults    voldmanaged=sdcard1:auto,encryptable=userdata,nonremovable
 
-# USB OTG
-/dev/block/sda1         /usb-otg        auto    rw    wait,storage,removable
+# =========================
+# 🔥 FIXED: USB OTG (vold-managed)
+# =========================
+/devices/platform/mt_usb*            auto    vfat    defaults    voldmanaged=usbotg:auto,encryptable=userdata
+
+# =========================
+# Optional fallback (DO NOT USE RAW BLOCK SD)
+# =========================
+# /dev/block/mmcblk1p1 /external_sd auto rw wait,storage,removable   ❌ REMOVED (breaks MTP & vold)
+
+# /dev/block/sda1 /usb-otg auto rw wait,storage,removable            ❌ REMOVED (conflicts with mt_usb)
+
+# =========================
+# Notes:
+# - SD/USB MUST be vold-managed on MTK
+# - DO NOT use raw mmcblk mounts in recovery
+# - /external_sd is created dynamically by vold
+# =========================
