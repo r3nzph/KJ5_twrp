@@ -138,63 +138,52 @@ BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
+# Screen
+TARGET_SCREEN_WIDTH := 720
+TARGET_SCREEN_HEIGHT := 1612
+
+# TWRP
+TW_EXTRA_LANGUAGES := true
+TARGET_USES_MKE2FS := true
+
+TW_FRAMERATE := 90
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.usb0/lun.%d/file"
+TW_MAX_BRIGHTNESS := 4095
+TW_DEFAULT_BRIGHTNESS := 1200
+TW_NO_SCREEN_BLANK := true
+TW_THEME := portrait_hdpi
+
 # Tools
 TW_INCLUDE_FB2PNG := true
 TW_INCLUDE_NTFS_3G := true
-TARGET_USES_MKE2FS := true
 TW_INCLUDE_REPACKTOOLS := true
+TW_INCLUDE_LIBRESETPROP := true
 TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LPTOOLS := true
-TW_INCLUDE_LIBRESETPROP := true
-TW_USE_TOOLBOX := true
-TW_INCLUDE_FUSE_EXFAT := true
-TW_INCLUDE_EXFAT := true
+TW_EXCLUDE_LPDUMP := true
+TW_EXCLUDE_APEX := true
 
+# Recovery-as-boot
+TW_HAS_NO_RECOVERY_PARTITION := true
 
-# Debug
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
-TWRP_EVENT_LOGGING := true
+# Status bar
+TW_STATUS_ICONS_ALIGN := center
+TW_CUSTOM_CLOCK_POS := 40
+TW_CUSTOM_CPU_POS := 270
 
-# UI Stability
-TW_FRAMERATE := 90
-TW_THEME := portrait_hdpi
-TW_SCREEN_BLANK_ON_BOOT := false
-TW_NO_SCREEN_BLANK := true
-
-# USB / ADB / MTP
-TW_NO_USB_STORAGE := true
-
-# Removed temporarily — likely breaking ADB/MTP initialization on MTK
-# TW_EXCLUDE_DEFAULT_USB_INIT := true
-
-TW_HAS_MTP := true
-TW_USES_OTG_USB := true
-TW_USE_NEW_MINADBD := true
-
-# Recommended for MTK vendor_boot recoveries
-TW_LOAD_VENDOR_BOOT_MODULES := true
+# FastbootD
 TW_INCLUDE_FASTBOOTD := true
 
-# REMOVE DIRECT MTP DEVICE (CAUSES FREEZE ON MTK)
-# TW_MTP_DEVICE := /dev/mtp_usb
+# USB Configuration
+TW_EXCLUDE_DEFAULT_USB_INIT := true
 
-# Screenshot path to SD card
-TW_SCREENSHOT_PATH := /external_sd/Pictures/Screenshots
+# USB OTG
+TW_USB_STORAGE := true
 
-# Storage
-RECOVERY_SDCARD_ON_DATA := true
-BOARD_HAS_NO_REAL_SDCARD := false
+# Vendor modules
+TW_LOAD_VENDOR_BOOT_MODULES := true
 
-# =========================
-# Extra UI
-# =========================
-TW_ALLOW_FORMAT_DATA := true
-TW_EXCLUDE_APEX := true
-TW_NO_LEGACY_PROPS := true
-
-# TEMP SENSOR
-TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone4/temp
-
-# Device Version
-TW_DEVICE_VERSION := SPARK 20 by r3nzph
+# Version
+TW_DEVICE_VERSION := nino
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
