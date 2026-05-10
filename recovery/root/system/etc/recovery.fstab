@@ -7,8 +7,8 @@ product     /product     ext4    ro,barrier=1    wait,logical,first_stage_mount,
 # Metadata (required for Android 12/13 FBE)
 /dev/block/by-name/md_udc   /metadata   ext4    noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
 
-# Data (NO encryption flags — non-decrypting setup)
-/dev/block/by-name/userdata   /data   ext4    noatime,nosuid,nodev,discard    wait,check,formattable,quota,first_stage_mount
+# Data (NON-DECRYPTING F2FS SETUP)
+/dev/block/by-name/userdata   /data   f2fs    noatime,nosuid,nodev,discard    wait,check,formattable
 
 # Vendor-related persistent partitions (MTK specific)
 /dev/block/by-name/persist    /mnt/vendor/persist    ext4    noatime,nosuid,nodev    wait,check,formattable
