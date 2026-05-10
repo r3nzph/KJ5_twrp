@@ -190,4 +190,4 @@ TW_NO_LEGACY_PROPS := true
 TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone4/temp
 
 # Device Version
-TW_DEVICE_VERSION := SPARK 20 by r3nzph
+TW_DEVICE_VERSION := shuush
