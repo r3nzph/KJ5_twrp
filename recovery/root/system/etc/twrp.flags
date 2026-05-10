@@ -3,40 +3,54 @@
 # =========================
 # Dynamic/Super Partitions
 # =========================
-/system_a           ext4      /dev/block/mapper/system_a         flags=backup=1;flashimg=1;slotselect;display="System Image A"
-/vendor_a           ext4      /dev/block/mapper/vendor_a         flags=backup=1;flashimg=1;slotselect;display="Vendor Image A"
-/product_a          ext4      /dev/block/mapper/product_a        flags=backup=1;flashimg=1;slotselect;display="Product Image A"
-/system_ext_a       ext4      /dev/block/mapper/system_ext_a     flags=backup=1;flashimg=1;slotselect;display="System_EXT Image A"
+/system         erofs    /dev/block/mapper/system_a         flags=backup=1;flashimg=1;slotselect;display="System"
+
+/vendor         erofs    /dev/block/mapper/vendor_a         flags=backup=1;flashimg=1;slotselect;display="Vendor"
+
+/product        erofs    /dev/block/mapper/product_a        flags=backup=1;flashimg=1;slotselect;display="Product"
+
+/system_ext     erofs    /dev/block/mapper/system_ext_a     flags=backup=1;flashimg=1;slotselect;display="System_EXT"
 
 # =========================
 # Boot Partitions
 # =========================
-/boot               emmc      /dev/block/by-name/boot            flags=display="Boot";flashimg=1;backup=1;slotselect
-/vendor_boot        emmc      /dev/block/by-name/vendor_boot     flags=display="Vendor Boot";flashimg=1;backup=1;slotselect
-/vbmeta             emmc      /dev/block/by-name/vbmeta          flags=display="VBMeta";flashimg=1;backup=1;slotselect
+/boot           emmc     /dev/block/by-name/boot_a          flags=display="Boot";flashimg=1;backup=1;slotselect
+
+/vendor_boot    emmc     /dev/block/by-name/vendor_boot_a   flags=display="Vendor Boot";flashimg=1;backup=1;slotselect
+
+/vbmeta         emmc     /dev/block/by-name/vbmeta_a        flags=display="VBMeta";flashimg=1;backup=1;slotselect
 
 # =========================
 # Sensitive Partitions
 # =========================
 # Avoid restoring these unless absolutely necessary
-/protect_f          ext4      /dev/block/by-name/protect1        flags=display="Protect_f";backup=0
-/protect_s          ext4      /dev/block/by-name/protect2        flags=display="Protect_s";backup=0
-/nvram              emmc      /dev/block/by-name/nvram           flags=display="Nvram";backup=0
-/nvdata             ext4      /dev/block/by-name/nvdata          flags=display="Nvdata";backup=0
+
+/protect_f      ext4     /dev/block/by-name/protect1        flags=display="Protect_f";backup=0
+
+/protect_s      ext4     /dev/block/by-name/protect2        flags=display="Protect_s";backup=0
+
+/nvram          emmc     /dev/block/by-name/nvram           flags=display="Nvram";backup=0
+
+/nvdata         ext4     /dev/block/by-name/nvdata          flags=display="Nvdata";backup=0
 
 # =========================
 # Firmware
 # =========================
-/dtbo               emmc      /dev/block/by-name/dtbo            flags=display="Dtbo";backup=1;flashimg=1;slotselect
-/logo               emmc      /dev/block/by-name/logo            flags=display="Logo";backup=1;flashimg=1
-/expdb              emmc      /dev/block/by-name/expdb
-#/seccfg            emmc      /dev/block/by-name/seccfg
+/dtbo           emmc     /dev/block/by-name/dtbo_a          flags=display="Dtbo";backup=1;flashimg=1;slotselect
 
-/spmfw              emmc      /dev/block/by-name/spmfw
-/otp                emmc      /dev/block/by-name/otp
+/logo           emmc     /dev/block/by-name/logo_a          flags=display="Logo";backup=1;flashimg=1;slotselect
+
+/expdb          emmc     /dev/block/by-name/expdb
+
+#/seccfg        emmc     /dev/block/by-name/seccfg
+
+/spmfw          emmc     /dev/block/by-name/spmfw_a
+
+/otp            emmc     /dev/block/by-name/otp
 
 # =========================
 # Removable storage
 # =========================
-/external_sd    auto    /dev/block/mmcblk1p1        /dev/block/mmcblk0p1          flags=display="Micro SD Card";storage;wipeingui;removable;backup=0
-/usb_otg    auto    /dev/block/sda1          /dev/block/sda    /dev/block/sdd1      flags=display="USB-OTG";storage;wipeingui;removable;backup=0
+/external_sd    auto     /dev/block/mmcblk1p1               flags=display="Micro SD Card";storage;wipeingui;removable;backup=0
+
+/usb_otg        auto     /dev/block/sda1                    flags=display="USB-OTG";storage;wipeingui;removable;backup=0
