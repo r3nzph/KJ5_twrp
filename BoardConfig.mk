@@ -164,7 +164,7 @@ TW_USE_NEW_MINADBD := true
 
 # Recommended for MTK vendor_boot recoveries
 TW_LOAD_VENDOR_BOOT_MODULES := true
-TW_INCLUDE_FASTBOOTD := true
+# TW_INCLUDE_FASTBOOTD := true
 
 # REMOVE DIRECT MTP DEVICE (CAUSES FREEZE ON MTK)
 # TW_MTP_DEVICE := /dev/mtp_usb
@@ -180,7 +180,7 @@ BOARD_HAS_NO_REAL_SDCARD := false
 # Extra UI
 # =========================
 TW_ALLOW_FORMAT_DATA := true
-TW_EXCLUDE_APEX := true
+# TW_EXCLUDE_APEX := true
 TW_NO_LEGACY_PROPS := true
 
 # TEMP SENSOR
