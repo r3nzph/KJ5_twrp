@@ -1,30 +1,30 @@
-# Dynamic partitions (read-only, A/B safe)
-system      /system      ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
-system_ext  /system_ext  ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
-vendor      /vendor      ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
-product     /product     ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
+# Dynamic Partitions (Android 12/13 Dynamic Super)
+system         /system              erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
+system_ext     /system_ext          erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
+vendor         /vendor              erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
+product        /product             erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
 
-# Metadata (required for Android 12/13 FBE)
-/dev/block/by-name/md_udc   /metadata   ext4    noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
+# Metadata
+/dev/block/by-name/metadata         /metadata             ext4     noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
 
-# Data (NO encryption flags — non-decrypting setup)
-/dev/block/by-name/userdata   /data   f2fs    noatime,nosuid,nodev,discard    wait,check,formattable,quota,first_stage_mount
+# Data
+/dev/block/by-name/userdata         /data                 f2fs     noatime,nosuid,nodev,discard,inlinecrypt    wait,check,formattable,quota,latemount,first_stage_mount
 
-# Vendor-related persistent partitions (MTK specific)
-/dev/block/by-name/persist    /mnt/vendor/persist    ext4    noatime,nosuid,nodev    wait,check,formattable
-/dev/block/by-name/nvdata     /mnt/vendor/nvdata     ext4    noatime,nosuid,nodev    wait,check,formattable
-/dev/block/by-name/nvcfg      /mnt/vendor/nvcfg      ext4    noatime,nosuid,nodev    wait,check,formattable
-/dev/block/by-name/protect1   /mnt/vendor/protect_f   ext4    noatime,nosuid,nodev    wait,check,formattable
-/dev/block/by-name/protect2   /mnt/vendor/protect_s   ext4    noatime,nosuid,nodev    wait,check,formattable
+# Persistent MTK partitions
+/dev/block/by-name/persist          /mnt/vendor/persist   ext4     noatime,nosuid,nodev            wait,check,formattable
+/dev/block/by-name/nvdata           /mnt/vendor/nvdata    ext4     noatime,nosuid,nodev            wait,check,formattable
+/dev/block/by-name/nvcfg            /mnt/vendor/nvcfg     ext4     noatime,nosuid,nodev            wait,check,formattable
+/dev/block/by-name/protect1         /mnt/vendor/protect_f ext4     noatime,nosuid,nodev            wait,check,formattable
+/dev/block/by-name/protect2         /mnt/vendor/protect_s ext4     noatime,nosuid,nodev            wait,check,formattable
 
-# Boot-related partitions (for flashing)
-/dev/block/by-name/boot          /boot          emmc    defaults
-/dev/block/by-name/vendor_boot   /vendor_boot   emmc    defaults
-/dev/block/by-name/dtbo          /dtbo          emmc    defaults
-/dev/block/by-name/vbmeta        /vbmeta        emmc    defaults
+# Boot related
+/dev/block/by-name/boot_a           /boot                 emmc     defaults
+/dev/block/by-name/vendor_boot_a    /vendor_boot          emmc     defaults
+/dev/block/by-name/dtbo_a           /dtbo                 emmc     defaults
+/dev/block/by-name/vbmeta_a         /vbmeta               emmc     defaults
 
-# External SD Card
-/dev/block/mmcblk1p1    /external_sd    vfat    rw,discard    wait,voldmanaged=sdcard1:auto,storage;wipeingui;removable
+# External SD
+/dev/block/mmcblk1p1                /external_sd          auto     rw                               wait,voldmanaged=sdcard1:auto,storage;wipeingui;removable
 
 # USB OTG
-/dev/block/sda1         /usb-otg        auto    rw            wait,voldmanaged=usb:auto,storage;wipeingui;removable
+/dev/block/sda1                     /usb_otg              auto     rw                               wait,voldmanaged=usb:auto,storage;wipeingui;removable
