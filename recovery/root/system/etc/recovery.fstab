@@ -23,8 +23,8 @@ product        /product             erofs    ro,barrier=1    wait,logical,first_
 /dev/block/by-name/dtbo_a           /dtbo                 emmc     defaults
 /dev/block/by-name/vbmeta_a         /vbmeta               emmc     defaults
 
-# External SD
-/dev/block/mmcblk1p1                /external_sd          auto     rw                               wait,voldmanaged=sdcard1:auto,storage;wipeingui;removable
+# External SD Card
+/dev/block/mmcblk1p1    /external_sd    auto    rw    wait,voldmanaged=sdcard1:auto,storage;wipeingui;removable
 
 # USB OTG
-/dev/block/sda1                     /usb_otg              auto     rw                               wait,voldmanaged=usb:auto,storage;wipeingui;removable
+/dev/block/sda1         /usb-otg        auto    rw    wait,voldmanaged=usb:auto,storage;wipeingui;removable
