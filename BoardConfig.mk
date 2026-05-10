@@ -172,6 +172,9 @@ TW_LOAD_VENDOR_BOOT_MODULES := true
 # Screenshot path to SD card
 TW_SCREENSHOT_PATH := /external_sd/Pictures/Screenshots
 
+# Persistent logs on SD card
+TWRP_LOG_PATH := /external_sd/TWRP
+
 # Storage
 RECOVERY_SDCARD_ON_DATA := true
 BOARD_HAS_NO_REAL_SDCARD := false
