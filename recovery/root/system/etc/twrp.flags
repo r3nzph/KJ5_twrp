@@ -51,6 +51,6 @@
 # =========================
 # Removable storage
 # =========================
-/external_sd   auto   /dev/block/mmcblk1p1   flags=display="Micro SD Card";storage;removable;backup=0
+/external_sd   auto   auto   flags=display="Micro SD Card";storage;removable;backup=0
 
-/usb_otg       auto   /dev/block/sda1        flags=display="USB-OTG";storage;removable;backup=0
+/usb_otg       auto   auto   flags=display="USB-OTG";storage;removable;backup=0
