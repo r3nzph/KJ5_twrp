@@ -1,3 +1,4 @@
+hers my recovery.fstab
 # Dynamic partitions (read-only, A/B safe)
 system      /system      ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
 system_ext  /system_ext  ext4    ro,barrier=1    wait,logical,first_stage_mount,slotselect
@@ -7,8 +8,8 @@ product     /product     ext4    ro,barrier=1    wait,logical,first_stage_mount,
 # Metadata (required for Android 12/13 FBE)
 /dev/block/by-name/md_udc   /metadata   ext4    noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
 
-# Data (NON-DECRYPTING F2FS SETUP)
-/dev/block/by-name/userdata   /data   f2fs    noatime,nosuid,nodev    wait
+# Data (NO encryption flags — non-decrypting setup)
+/dev/block/by-name/userdata   /data   f2fs    noatime,nosuid,nodev,discard    wait,check,formattable,quota,first_stage_mount
 
 # Vendor-related persistent partitions (MTK specific)
 /dev/block/by-name/persist    /mnt/vendor/persist    ext4    noatime,nosuid,nodev    wait,check,formattable
