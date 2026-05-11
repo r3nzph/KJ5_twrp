@@ -39,6 +39,6 @@
 /otp                emmc       /dev/block/by-name/otp
 
 # Removable Storage
-/external_sd        vfat       /dev/block/mmcblk1p1                 /dev/block/mmcblk1    flags=display="MicroSD";storage;wipeingui;removable
+/external_sd        vfat      /dev/block/mmcblk1p1    /dev/block/mmcblk1 \   flags=display="MicroSD";storage;wipeingui;removable
 
-/usbstorage         vfat       /dev/block/sda1                      /dev/block/sda         flags=fsflags=utf8;display="USB Storage";storage;wipeingui;removable
+/usbstorage         vfat      /dev/block/sda1         /dev/block/sda         flags=fsflags=utf8;display="USB Storage";storage;wipeingui;removable
