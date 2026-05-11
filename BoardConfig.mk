@@ -174,7 +174,8 @@ TWRP_LOG_PATH := /sdcard/TWRP
 
 # Storage
 RECOVERY_SDCARD_ON_DATA := true
-TW_NO_USB_STORAGE := true
+# TW_NO_USB_STORAGE := true
+TW_USE_EXTERNAL_STORAGE := true
 
 # =========================
 # Extra UI
