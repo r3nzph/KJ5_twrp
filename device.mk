@@ -23,19 +23,10 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
-PRODUCT_PACKAGES_DEBUG += \
-    bootctrl \
-    update_engine_client
-
 # Bootctrl (KEEP MTK IMPLEMENTATION)
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-mtkimpl \
     android.hardware.boot@1.2-mtkimpl.recovery
-
-# Fastbootd
-PRODUCT_PACKAGES += \
-    fastbootd \
-    android.hardware.fastboot@1.0-impl-mock
 
 # Update Engine
 PRODUCT_PACKAGES += \
