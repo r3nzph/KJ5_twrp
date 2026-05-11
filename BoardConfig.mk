@@ -168,14 +168,13 @@ TW_LOAD_VENDOR_BOOT_MODULES := true
 # TW_INCLUDE_FASTBOOTD := true
 
 # Screenshot path to SD card
-TW_SCREENSHOT_PATH := /storage/sdcard1/Pictures/Screenshots
-
+TW_SCREENSHOT_PATH := /sdcard/Pictures/Screenshots
 # Persistent logs on SD card
-TWRP_LOG_PATH := /storage/sdcard1/TWRP
+TWRP_LOG_PATH := /sdcard/TWRP
 
 # Storage
 RECOVERY_SDCARD_ON_DATA := true
-BOARD_HAS_NO_REAL_SDCARD := false
+BOARD_HAS_NO_REAL_SDCARD := true
 
 # =========================
 # Extra UI
