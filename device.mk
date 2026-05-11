@@ -65,6 +65,9 @@ PRODUCT_SHIPPING_API_LEVEL := 31
 # Dynamic Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
+# Ota fix
+PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS = false
+
 # fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.1-impl-mock \
