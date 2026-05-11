@@ -52,6 +52,14 @@ PRODUCT_PACKAGES += \
     otapreopt_script \
     cppreopts.sh
 
+# Vibrator modules
+TARGET_RECOVERY_DEVICE_MODULES += \
+    android.hardware.vibrator-V2-ndk.so
+
+RECOVERY_LIBRARY_SOURCE_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.vibrator-V2-ndk.so
+
+
 PRODUCT_PROPERTY_OVERRIDES += ro.twrp.vendor_boot=true
 
 # Dynamic Partitions
