@@ -24,7 +24,7 @@ on fs
     install_keyring
 
 on late-fs
-    mount_all /first_stage_ramdisk/fstab.mt6833 --late
+    mount_all /first_stage_ramdisk/fstab.mt6768 --late
 
 on property:crypto.ready=1
     start mobicore
