@@ -1,5 +1,4 @@
 import /tee.rc
-import /init.custom.rc
 import /trustonic.rc
 
 service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
