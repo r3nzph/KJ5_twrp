@@ -9,12 +9,10 @@ ro.postinstall.fstab.prefix=/system
 ro.secure=0
 ro.adb.secure=0
 ro.debuggable=1
-persist.sys.usb.config=adb,mtp
 
 # =========================
-# USB (STABLE)
+# USB
 # =========================
-sys.usb.config=adb,mtp
 persist.sys.isUsbOtgEnabled=true
 
 # Crypto
@@ -28,7 +26,7 @@ ro.vendor.mtk_tee_gp_support=1
 ro.vendor.mtk_trustonic_tee_support=1
 
 # =========================
-# Gatekeeper / Keymaster (SAFE MINIMAL)
+# Gatekeeper / Keymaster
 # =========================
 ro.hardware.gatekeeper=trustonic
 keymaster_ver=4.1
