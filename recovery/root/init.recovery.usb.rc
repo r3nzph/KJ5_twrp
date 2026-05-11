@@ -10,12 +10,3 @@ on boot
     setprop sys.usb.controller musb-hdrc
     setprop sys.usb.configfs 1
     setprop sys.usb.ffs.aio_compat 0
-
-on property:sys.usb.config=mtp,adb
-    setprop sys.usb.config mtp,adb
-
-on property:sys.usb.config=adb
-    setprop sys.usb.config adb
-
-on property:sys.usb.config=sideload
-    setprop sys.usb.config sideload
