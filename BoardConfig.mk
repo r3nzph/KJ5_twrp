@@ -153,7 +153,7 @@ TW_NO_SCREEN_BLANK := true
 
 #TMP
 TW_HAS_MTP := true
-TW_MTP_DEVICE := "mtp_usb"
+# TW_MTP_DEVICE := "mtp_usb"
 TW_USE_LEGACY_USB_INIT := true
 
 # Removed temporarily — likely breaking ADB/MTP initialization on MTK
