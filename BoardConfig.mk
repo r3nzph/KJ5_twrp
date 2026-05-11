@@ -1,10 +1,6 @@
 # Device Path
 DEVICE_PATH := device/tecno/KJ5
 
-# Building with minimal manifest
-ALLOW_MISSING_DEPENDENCIES := true
-BUILD_BROKEN_DUP_RULES := true
-
 # Architecture Settings
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
@@ -31,6 +27,11 @@ ENABLE_SCHEDBOOST := true
 TARGET_BOOTLOADER_BOARD_NAME := KJ5
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
+
+# Build Fixes
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+ALLOW_MISSING_DEPENDENCIES := true
 
 # Display Settings
 TARGET_SCREEN_DENSITY := 320
@@ -163,9 +164,6 @@ TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LPTOOLS := true
 TW_EXCLUDE_LPDUMP := true
 TW_EXCLUDE_APEX := true
-
-# Recovery-as-boot
-TW_HAS_NO_RECOVERY_PARTITION := true
 
 # Status bar
 TW_STATUS_ICONS_ALIGN := center
