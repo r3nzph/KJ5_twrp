@@ -1,7 +1,6 @@
 import /tee.rc
 import /init.custom.rc
 import /trustonic.rc
-import /init.vibrator.rc
 
 service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
