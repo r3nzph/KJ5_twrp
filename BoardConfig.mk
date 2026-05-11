@@ -154,14 +154,10 @@ TW_NO_SCREEN_BLANK := true
 #TMP
 TW_HAS_MTP := true
 # TW_MTP_DEVICE := "mtp_usb"
-TW_USE_LEGACY_USB_INIT := true
-
-# Removed temporarily — likely breaking ADB/MTP initialization on MTK
-# TW_EXCLUDE_DEFAULT_USB_INIT := true
-
-TW_HAS_MTP := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/mt_usb/gadget/lun%d/file"
 TW_USES_OTG_USB := true
-TW_USE_NEW_MINADBD := true
+# TW_USE_NEW_MINADBD := true
 
 # Recommended for MTK vendor_boot recoveries
 TW_LOAD_VENDOR_BOOT_MODULES := true
