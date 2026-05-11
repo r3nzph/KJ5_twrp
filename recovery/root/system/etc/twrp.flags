@@ -1,56 +1,44 @@
 # mount point       fstype    device                                                                flags
 
-# =========================
-# Dynamic/Super Partitions
-# =========================
-/system         erofs    /dev/block/mapper/system_a         flags=backup=1;flashimg=1;slotselect;display="System"
+# Super Partitions
+/system_a           erofs      /dev/block/mapper/system_a                                 flags=backup=1;flashimg=1;slotselect;display="System Image A"
 
-/vendor         erofs    /dev/block/mapper/vendor_a         flags=backup=1;flashimg=1;slotselect;display="Vendor"
+/vendor_a           erofs      /dev/block/mapper/vendor_a                                 flags=backup=1;flashimg=1;slotselect;display="Vendor Image A"
 
-/product        erofs    /dev/block/mapper/product_a        flags=backup=1;flashimg=1;slotselect;display="Product"
+/product_a          erofs      /dev/block/mapper/product_a                                flags=backup=1;flashimg=1;slotselect;display="Product Image A"
 
-/system_ext     erofs    /dev/block/mapper/system_ext_a     flags=backup=1;flashimg=1;slotselect;display="System_EXT"
+/system_ext_a       erofs      /dev/block/mapper/system_ext_a                             flags=backup=1;flashimg=1;slotselect;display="System_EXT Image A"
 
-# =========================
-# Boot Partitions
-# =========================
-/boot           emmc     /dev/block/by-name/boot_a          flags=display="Boot";flashimg=1;backup=1;slotselect
+# Boot
+/boot               emmc       /dev/block/by-name/boot                                    flags=display="Boot";flashimg=1;backup=1;slotselect
 
-/vendor_boot    emmc     /dev/block/by-name/vendor_boot_a   flags=display="Vendor Boot";flashimg=1;backup=1;slotselect
+/vendor_boot        emmc       /dev/block/by-name/vendor_boot                             flags=display="Vendor Boot";flashimg=1;backup=1;slotselect
 
-/vbmeta         emmc     /dev/block/by-name/vbmeta_a        flags=display="VBMeta";flashimg=1;backup=1;slotselect
+/vbmeta             emmc       /dev/block/by-name/vbmeta                                  flags=display="VBMeta";flashimg=1;backup=1;slotselect
 
-# =========================
 # Sensitive Partitions
-# =========================
-# Avoid restoring these unless absolutely necessary
+/protect_f          ext4       /dev/block/by-name/protect1                                flags=display="Protect_f";backup=1;slotselect
 
-/protect_f      ext4     /dev/block/by-name/protect1        flags=display="Protect_f";backup=0
+/protect_s          ext4       /dev/block/by-name/protect2                                flags=display="Protect_s";backup=1;slotselect
 
-/protect_s      ext4     /dev/block/by-name/protect2        flags=display="Protect_s";backup=0
+/nvram              emmc       /dev/block/by-name/nvram                                   flags=display="Nvram";backup=1;slotselect
 
-/nvram          emmc     /dev/block/by-name/nvram           flags=display="Nvram";backup=0
+/nvdata             ext4       /dev/block/by-name/nvdata                                  flags=display="Nvdata";backup=1;slotselect
 
-/nvdata         ext4     /dev/block/by-name/nvdata          flags=display="Nvdata";backup=0
-
-# =========================
 # Firmware
-# =========================
-/dtbo           emmc     /dev/block/by-name/dtbo_a          flags=display="Dtbo";backup=1;flashimg=1;slotselect
+/dtbo               emmc       /dev/block/by-name/dtbo                                    flags=display="Dtbo";backup=1;flashimg=1;slotselect
 
-/logo           emmc     /dev/block/by-name/logo_a          flags=display="Logo";backup=1;flashimg=1;slotselect
+/logo               emmc       /dev/block/by-name/logo                                    flags=display="Logo";backup=1;flashimg=1;slotselect
 
-/expdb          emmc     /dev/block/by-name/expdb
+/expdb              emmc       /dev/block/by-name/expdb
 
-#/seccfg        emmc     /dev/block/by-name/seccfg
+#/seccfg            emmc       /dev/block/by-name/seccfg
 
-/spmfw          emmc     /dev/block/by-name/spmfw_a
+/spmfw              emmc       /dev/block/by-name/spmfw                                   flags=slotselect
 
-/otp            emmc     /dev/block/by-name/otp
+/otp                emmc       /dev/block/by-name/otp
 
-# =========================
-# Removable storage
-# =========================
-/external_sd   auto   auto   flags=display="Micro SD Card";storage;removable;backup=0
+# Removable Storage
+/external_sd        vfat       /dev/block/mmcblk1p1                 /dev/block/mmcblk1    flags=display="MicroSD";storage;wipeingui;removable
 
-/usb_otg       auto   auto   flags=display="USB-OTG";storage;removable;backup=0
+/usbstorage         vfat       /dev/block/sda1                      /dev/block/sda         flags=fsflags=utf8;display="USB Storage";storage;wipeingui;removable
