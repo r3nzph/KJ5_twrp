@@ -15,15 +15,6 @@ on post-fs
     chown system system /mnt/vendor/persist/paytrigger
     chmod 0777 /mnt/vendor/persist/paytrigger
 
-    #BSP: Create startPara for anti-crack by xiaolin.wu 20231225 start
-    mkdir /mnt/vendor/persist/startPara
-    chown system system /mnt/vendor/persist/startPara
-    chmod 0777 /mnt/vendor/persist/startPara
-    mkdir /tranfs/startPara
-    chown system system /tranfs/startPara
-    chmod 0777 /tranfs/startPara
-    #BSP: Create startPara for anti-crack by xiaolin.wu 20231225 end
-
 on post-fs-data
     # Create /data/vendor/key_provisioning dir and get proper encryption policy installed
     # Key Installation
