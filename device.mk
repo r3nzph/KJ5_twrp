@@ -45,10 +45,6 @@ PRODUCT_PACKAGES_DEBUG += \
     update_engine_client
 
 PRODUCT_PACKAGES += \
-    otapreopt_script \
-    checkpoint_gc
-
-PRODUCT_PACKAGES += \
     update_engine \
     update_engine_sideload \
     update_verifier
