@@ -1,55 +1,45 @@
-# =========================
-# Dynamic Partitions (A/B, Android 12/13)
-# =========================
-system         /system              erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
-system_ext     /system_ext          erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
-vendor         /vendor              erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
-product        /product             erofs    ro,barrier=1    wait,logical,first_stage_mount,slotselect
+# Dynamic Partitions
+system          /system                erofs    ro                             wait,slotselect,avb=vbmeta_system,logical,first_stage_mount
+system_ext      /system_ext            erofs    ro                             wait,slotselect,avb=vbmeta_system,logical,first_stage_mount
+vendor          /vendor                erofs    ro                             wait,slotselect,avb,logical,first_stage_mount
+product         /product               erofs    ro                             wait,slotselect,avb,logical,first_stage_mount
 
-# =========================
-# Metadata / Data
-# =========================
-/dev/block/by-name/metadata         /metadata             ext4     noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
+# Metadata
+/dev/block/by-name/md_udc              /metadata               ext4     noatime,nosuid,nodev,discard                                                     wait,check,formattable,first_stage_mount
 
-/dev/block/by-name/userdata         /data                 f2fs     noatime,nosuid,nodev,discard,inlinecrypt,fsync_mode=nobarrier,reserve_root=134217,resgid=1065    wait,check,formattable,quota,latemount,resize,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2
+# Data
+/dev/block/by-name/userdata            /data                   f2fs     noatime,nosuid,nodev,discard,noflush_merge,fsync_mode=nobarrier,reserve_root=134217,resgid=1065,inlinecrypt
+                                                                                                                             wait,check,formattable,quota,latemount,resize,readahead_size_kb=512,reservedsize=128m,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2,keydirectory=/metadata/vold/metadata_encryption
 
-# =========================
-# MTK Persistent partitions
-# =========================
-/dev/block/by-name/persist          /mnt/vendor/persist   ext4     noatime,nosuid,nodev            wait,check,formattable
-/dev/block/by-name/nvdata           /mnt/vendor/nvdata    ext4     noatime,nosuid,nodev            wait,check,formattable
-/dev/block/by-name/nvcfg            /mnt/vendor/nvcfg     ext4     noatime,nosuid,nodev            wait,check,formattable
-/dev/block/by-name/protect1         /mnt/vendor/protect_f ext4     noatime,nosuid,nodev            wait,check,formattable
-/dev/block/by-name/protect2         /mnt/vendor/protect_s ext4     noatime,nosuid,nodev            wait,check,formattable
+# MTK Persistent Partitions
+/dev/block/by-name/protect1            /mnt/vendor/protect_f   ext4     noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc                       wait,check,formattable
+/dev/block/by-name/protect2            /mnt/vendor/protect_s   ext4     noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc                       wait,check,formattable
+/dev/block/by-name/nvdata              /mnt/vendor/nvdata      ext4     noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc                       wait,check,formattable
+/dev/block/by-name/nvcfg               /mnt/vendor/nvcfg       ext4     noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc                       wait,check,formattable
+/dev/block/by-name/persist             /mnt/vendor/persist     ext4     noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc                       wait,check,formattable
+/dev/block/by-name/kdebuginfo          /mnt/kdebuginfo         ext4     noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc                       wait,check,formattable
 
-# =========================
-# Boot / Firmware
-# =========================
-/dev/block/by-name/boot_a           /boot                 emmc     defaults
-/dev/block/by-name/vendor_boot_a    /vendor_boot          emmc     defaults
-/dev/block/by-name/dtbo_a           /dtbo                 emmc     defaults
-/dev/block/by-name/vbmeta_a         /vbmeta               emmc     defaults
+# Boot / AVB
+/dev/block/by-name/boot                /boot                   emmc     defaults                                                                        first_stage_mount,nofail,slotselect
+/dev/block/by-name/vendor_boot         /vendor_boot            emmc     defaults
+/dev/block/by-name/vbmeta              /vbmeta                 emmc     defaults
+/dev/block/by-name/vbmeta_vendor       /vbmeta_vendor          emmc     defaults                                                                        first_stage_mount,nofail,slotselect
+/dev/block/by-name/vbmeta_system       /vbmeta_system          emmc     defaults                                                                        first_stage_mount,nofail,slotselect,avb=vbmeta
 
-# =========================
-# 🔥 FIXED: External Storage (MTK vold-managed - REQUIRED)
-# =========================
-/devices/platform/externdevice*      auto    auto    defaults    voldmanaged=sdcard1:auto,encryptable=userdata,nonremovable
+# Firmware
+/dev/block/by-name/dtbo                /dtbo                   emmc     defaults
+/dev/block/by-name/logo                /logo                   emmc     defaults
+/dev/block/by-name/expdb               /expdb                  emmc     defaults
+/dev/block/by-name/seccfg              /seccfg                 emmc     defaults
+/dev/block/by-name/spmfw               /spmfw                  emmc     defaults
+/dev/block/by-name/otp                 /otp                    emmc     defaults
 
-# =========================
-# 🔥 FIXED: USB OTG (vold-managed)
-# =========================
-/devices/platform/mt_usb*            auto    vfat    defaults    voldmanaged=usbotg:auto,encryptable=userdata
-
-# =========================
-# Optional fallback (DO NOT USE RAW BLOCK SD)
-# =========================
-# /dev/block/mmcblk1p1 /external_sd auto rw wait,storage,removable   ❌ REMOVED (breaks MTP & vold)
-
-# /dev/block/sda1 /usb-otg auto rw wait,storage,removable            ❌ REMOVED (conflicts with mt_usb)
-
-# =========================
-# Notes:
-# - SD/USB MUST be vold-managed on MTK
-# - DO NOT use raw mmcblk mounts in recovery
-# - /external_sd is created dynamically by vold
-# =========================
+# Misc
+/dev/block/by-name/frp                 /persistent             emmc     defaults
+/dev/block/by-name/nvram               /nvram                  emmc     defaults
+/dev/block/by-name/proinfo             /proinfo                emmc     defaults
+/dev/block/by-name/lk                  /bootloader             emmc     defaults
+/dev/block/by-name/lk2                 /bootloader2            emmc     defaults
+/dev/block/by-name/misc                /misc                   emmc     defaults
+/dev/block/by-name/para                /para                   emmc     defaults
+/dev/block/by-name/boot_para           /boot_para              emmc     defaults
