@@ -180,7 +180,7 @@ TW_NO_USB_STORAGE := true
 # Extra UI
 # =========================
 TW_ALLOW_FORMAT_DATA := true
-# TW_EXCLUDE_APEX := true
+TW_EXCLUDE_APEX := true
 TW_NO_LEGACY_PROPS := true
 
 # TEMP SENSOR
