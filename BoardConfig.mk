@@ -1,4 +1,4 @@
-no# Device Path
+# Device Path
 DEVICE_PATH := device/tecno/KJ5
 
 # Architecture Settings
