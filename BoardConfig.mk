@@ -116,9 +116,11 @@ BOARD_USES_GENERIC_KERNEL_IMAGE := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
-# Crypto (disabled as requested)
-# TW_INCLUDE_CRYPTO := false
-# TW_INCLUDE_CRYPTO_FBE := false
+## Crypto
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+TW_PREPARE_DATA_MEDIA_EARLY := true
 
 # AVB
 BOARD_AVB_ENABLE := true
@@ -151,9 +153,9 @@ TW_THEME := portrait_hdpi
 TW_SCREEN_BLANK_ON_BOOT := false
 TW_NO_SCREEN_BLANK := true
 
-#TMP
+# TMP
 TW_HAS_MTP := true
-# TW_MTP_DEVICE := "mtp_usb"
+TW_MTP_DEVICE := "mtp_usb"
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/mt_usb/gadget/lun%d/file"
 TW_USES_OTG_USB := true
@@ -161,16 +163,11 @@ TW_USES_OTG_USB := true
 
 # Recommended for MTK vendor_boot recoveries
 TW_LOAD_VENDOR_BOOT_MODULES := true
-# TW_INCLUDE_FASTBOOTD := true
 
-# Screenshot path to SD card
-TW_SCREENSHOT_PATH := /sdcard/Pictures/Screenshots
-# Persistent logs on SD card
-TWRP_LOG_PATH := /sdcard/TWRP
+TW_INCLUDE_FASTBOOTD := true
 
 # Storage
 RECOVERY_SDCARD_ON_DATA := true
-# TW_NO_USB_STORAGE := true
 TW_USE_EXTERNAL_STORAGE := true
 
 # =========================
@@ -184,4 +181,4 @@ TW_NO_LEGACY_PROPS := true
 TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone4/temp
 
 # Device Version
-TW_DEVICE_VERSION := shuush
+TW_DEVICE_VERSION := KJ5
