@@ -190,5 +190,5 @@ TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone4/temp
 TW_DEVICE_VERSION := KJ5
 
 # Init
-TARGET_INIT_VENDOR_LIB := libinit_tecno-KJ5
-TARGET_RECOVERY_DEVICE_MODULES := libinit_tecno-KJ5
+TARGET_INIT_VENDOR_LIB := libinit_KJ5
+TARGET_RECOVERY_DEVICE_MODULES := libinit_KJ5
