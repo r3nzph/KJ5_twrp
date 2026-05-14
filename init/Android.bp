@@ -1,5 +1,5 @@
 cc_library_static {
-    name: "libinit_tecno-KJ5",
+    name: "libinit_KJ5",
     header_libs: [
         "libbase_headers",
     ],
@@ -9,6 +9,6 @@ cc_library_static {
     static_libs: [
         "libbase",
     ],
-    srcs: ["init_tecno-KJ5.cpp"],
+    srcs: ["init_KJ5.cpp"],
     recovery_available: true,
 }
