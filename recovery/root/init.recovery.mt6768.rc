@@ -1,4 +1,6 @@
 import /trustonic.rc
+import /init.custom.rc
+import /init.vibrator.rc
 
 on init
     setprop sys.usb.configfs 1
