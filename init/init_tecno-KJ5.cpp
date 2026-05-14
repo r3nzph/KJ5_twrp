@@ -24,11 +24,11 @@ void vendor_load_properties()
     string prop_partitions[] = {"", "vendor.", "odm."};
     for (const string &prop : prop_partitions)
     {
-        property_override(string("ro.product.") + prop + string("brand"), "Infinix");
-        property_override(string("ro.product.") + prop + string("name"), "X6881-OP");
-        property_override(string("ro.product.") + prop + string("device"), "Infinix-X6881");
-        property_override(string("ro.product.") + prop + string("model"), "Infinix X6881");
-        property_override(string("ro.product.") + prop + string("marketname"), "Infinix HOT 50 Pro");
-        property_override(string("ro.product.system.") + prop + string("device"), "Infinix HOT 50 Pro");
+        property_override(string("ro.product.") + prop + string("brand"), "tecno");
+        property_override(string("ro.product.") + prop + string("name"), "KJ5-OP");
+        property_override(string("ro.product.") + prop + string("device"), "KJ5");
+        property_override(string("ro.product.") + prop + string("model"), "tecno KJ5");
+        property_override(string("ro.product.") + prop + string("marketname"), "tecno spark 20");
+        property_override(string("ro.product.system.") + prop + string("device"), "tecno spark 20");
     }
 }
