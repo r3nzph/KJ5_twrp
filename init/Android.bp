@@ -1,0 +1,14 @@
+cc_library_static {
+    name: "libinit_tecno-KJ5",
+    header_libs: [
+        "libbase_headers",
+    ],
+    cflags: [
+        "-Wall",
+    ],
+    static_libs: [
+        "libbase",
+    ],
+    srcs: ["init_tecno-KJ5.cpp"],
+    recovery_available: true,
+}
