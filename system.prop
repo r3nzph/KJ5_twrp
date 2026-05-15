@@ -1,32 +1,17 @@
-# =========================
-# Fstab / Postinstall
-# =========================
+# Fstab
 ro.postinstall.fstab.prefix=/system
 
-# =========================
-# ADB (DEBUG ENABLED FOR TWRP)
-# =========================
-ro.secure=0
-ro.adb.secure=0
-ro.debuggable=1
-
-# =========================
-# USB
-# =========================
-persist.sys.isUsbOtgEnabled=true
+# USB MTP
+ro.sys.usb.storage.type=mtp
 
 # Crypto
-# ro.crypto.volume.filenames_mode=aes-256-cts
-# ro.crypto.support_metadata_encrypt=true
+ro.crypto.volume.filenames_mode=aes-256-cts
 
-# =========================
-# TEE (SAFE KEEP)
-# =========================
+# Gatekeeper
+ro.hardware.gatekeeper=trustonic
+
+# TEE
 ro.vendor.mtk_tee_gp_support=1
 ro.vendor.mtk_trustonic_tee_support=1
 
-# =========================
-# Gatekeeper / Keymaster
-# =========================
-ro.hardware.gatekeeper=trustonic
 keymaster_ver=4.1
