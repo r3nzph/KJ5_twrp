@@ -10,3 +10,7 @@ __pycache__/
 .vscode/
 *.bak
 *.orig
+
+# Common tree (separate repository, cloned for build dependency)
+device/transsion/mt6768-common/
+

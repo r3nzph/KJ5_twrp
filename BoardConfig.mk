@@ -1,254 +1,46 @@
-# Device Path
+# ============================================================
+# BoardConfig.mk — TECNO Spark 20 (KJ5 / MT6768)
+#
+# This file includes the MT6768 Common Tree and only defines
+# device-specific values for the KJ5 (TECNO Spark 20).
+# ============================================================
+
 DEVICE_PATH := device/tecno/KJ5
 
-# Architecture Settings
-TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-a
-TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_VARIANT := generic
-TARGET_CPU_VARIANT_RUNTIME := cortex-a53
+# Include MT6768 Common Tree
+include device/transsion/mt6768-common/BoardConfigCommon.mk
 
-TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv7-a-neon
-TARGET_2ND_CPU_ABI := armeabi-v7a
-TARGET_2ND_CPU_VARIANT := generic
-TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a53
+# ============================================================
+# DEVICE-SPECIFIC CONFIGURATION
+# ============================================================
 
-#64bit
-TARGET_SUPPORTS_64_BIT_APPS := true
-TARGET_IS_64_BIT := true
-TARGET_USES_64_BIT_BINDER := true
-
-BOARD_USES_MTK_HARDWARE := true
-ENABLE_CPUSETS := true
-ENABLE_SCHEDBOOST := true
-
-# Bootloader Settings
+# Device Identity
 TARGET_BOOTLOADER_BOARD_NAME := KJ5
-TARGET_NO_BOOTLOADER := true
-TARGET_USES_UEFI := true
+TARGET_OTA_ASSERT_DEVICE := KJ5
 
-# Build Fixes
-BUILD_BROKEN_DUP_RULES := true
-BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
-ALLOW_MISSING_DEPENDENCIES := true
-
-# Display Settings
+# Display
 TARGET_SCREEN_DENSITY := 320
 TW_THEME := portrait_hdpi
 
-# DRM/Display fix for splash freeze: load drm modules before graphics init
-TW_GRAPHICS_FORCE_USE_DRM := true
-TW_LOAD_VENDOR_BOOT_MODULES := true
-
-# Assert
-TARGET_OTA_ASSERT_DEVICE := KJ5
-
-# DTBO
-BOARD_KERNEL_SEPARATED_DTBO := true
-
-# Kernel
-TARGET_NO_KERNEL := true
-BOARD_RAMDISK_USE_LZ4 := true
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
-
-BOARD_BOOT_HEADER_VERSION := 4
-BOARD_KERNEL_BASE := 0x40078000
-BOARD_KERNEL_OFFSET := 0x00008000
-BOARD_PAGE_SIZE := 4096
-BOARD_TAGS_OFFSET := 0x0bc08000
-BOARD_RAMDISK_OFFSET := 0x07c08000
-BOARD_DTB_OFFSET := 0x0bc08000
-BOARD_VENDOR_CMDLINE := bootopt=64S3,32N2,64N2
-BOARD_VENDOR_BASE := 0x40078000
-
-BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
-
-# Partitions
-BOARD_FLASH_BLOCK_SIZE := 262144
-
-BOARD_SUPER_PARTITION_BLOCK_DEVICES := super
-BOARD_SUPER_PARTITION_METADATA_DEVICE := super
-BOARD_SUPER_PARTITION_GROUPS := main
+# Partition sizes (KJ5-specific)
 BOARD_MAIN_SIZE := 9122611200
 BOARD_SUPER_PARTITION_SIZE := 9122611200
 BOARD_SUPER_PARTITION_SUPER_DEVICE_SIZE := 9122611200
 BOARD_SUPER_IMAGE_SIZE := 9122611200
-BOARD_EXT4_SHARE_DUP_BLOCKS := true
 
-# DTBO partition size (required for BOARD_KERNEL_SEPARATED_DTBO)
 BOARD_DTBOIMG_PARTITION_SIZE := 8388608
-
-# Boot image partition size (required for A/B updates)
 BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
+BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
+BOARD_VENDOR_BOOTIMAGE_PARTITION_RESERVED_SIZE := 0
+BOARD_USES_VENDOR_BOOTIMAGE := true
 
-BOARD_MAIN_PARTITION_LIST += \
-    product \
-    system \
-    system_ext \
-    vendor
+# Vendor modules for KJ5 display/touch
+TW_LOAD_VENDOR_MODULES := "mediatek-drm.ko mtk_panel_ext.ko pwm-mtk-disp.ko leds-mtk-disp.ko tran_drm_panel_i2c.ko"
 
-# Filesystems (SYSTEM SIDE)
-BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := erofs
-BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := erofs
-BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := erofs
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := erofs
-
-# USERDATA
-BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
-TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
-
-BOARD_USES_METADATA_PARTITION := true
-BOARD_USES_VENDORIMAGE := true
-
-# Output paths
-TARGET_COPY_OUT_PRODUCT := product
-TARGET_COPY_OUT_SYSTEM := system
-TARGET_COPY_OUT_SYSTEM_EXT := system_ext
-TARGET_COPY_OUT_VENDOR := vendor
-
-# Platform
-TARGET_BOARD_PLATFORM := mt6768
-BOARD_VNDK_VERSION := current
-
-# System SDK version must match PRODUCT_SHIPPING_API_LEVEL (33)
-# to avoid build error: "BOARD_SYSTEMSDK_VERSIONS (32) must all be greater
-# than or equal to PRODUCT_SHIPPING_API_LEVEL (33)"
-# BOARD_SYSTEMSDK_VERSIONS := 33
-
-# Recovery Settings
-TARGET_NO_RECOVERY := true
-BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
-BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
-BOARD_USES_RECOVERY_AS_VENDOR_BOOT := true
-BOARD_USES_GENERIC_KERNEL_IMAGE := false
-
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-
-# Graphics Backend (DRM required for Android 13 MTK kernels)
-TW_GRAPHICS_BACKEND := "drm"
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
-BOARD_HAS_LARGE_FILESYSTEM := true
-
-BOARD_HAS_NO_SELECT_BUTTON  := true
-BOARD_SUPPRESS_SECURE_ERASE := true
-
-# Verified Boot
-BOARD_AVB_ENABLE := true
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
-BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
-BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
-
-# Security Patches
-PLATFORM_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 99.87.36
-PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
-VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-
-# Crypto
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
+# Additional FBE flags for KJ5
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_PREPARE_DATA_MEDIA_EARLY := true
 TW_REQUIRE_FBE := true
 
-TW_FORCE_KEYMASTER_VER := 4
-
-# Android 13 vold-based decryption
-TW_CRYPTO_USE_SYSTEM_VOLD := true
-TW_CRYPTO_SYSTEM_VOLD_DECRYPT := true
-TW_CRYPTO_SYSTEM_VOLD_KEY_PATH := "/metadata/vold/metadata_encryption"
-
-# Vendor boot modules loaded for display/touch
-TW_LOAD_VENDOR_MODULES := "mediatek-drm.ko mtk_panel_ext.ko pwm-mtk-disp.ko leds-mtk-disp.ko tran_drm_panel_i2c.ko"
-
-# Mount behavior
-TW_TARGET_USES_MOUNT := true 
-
-# Debug
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
-TWRP_EVENT_LOGGING := true
-
-# Tools
-TW_INCLUDE_FB2PNG := true
-TW_INCLUDE_NTFS_3G := true
-TW_INCLUDE_REPACKTOOLS := true
-TW_INCLUDE_RESETPROP := true
-TW_INCLUDE_LPTOOLS := true
-TW_INCLUDE_LIBRESETPROP := true
-TW_USE_TOOLBOX := true
-TW_INCLUDE_FUSE_EXFAT := true
-TW_INCLUDE_EXFAT := true
-TW_INCLUDE_BASH := true
-TW_INCLUDE_SUPERSU := true
-TW_INCLUDE_LPDUMP := true
-TARGET_USES_MKE2FS := true
-
-# TWRP Configuration
-TW_FRAMERATE := 60
-TW_EXTRA_LANGUAGES := true
-TW_SCREEN_BLANK_ON_BOOT := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_EXCLUDE_APEX := true
-TW_EXCLUDE_TZDATA := true
-TW_EXCLUDE_PYTHON := true
-TW_EXCLUDE_TWRPAPP := true
-TW_NO_FASTBOOT_BOOT := true
-
-# Disable forced encryption prompts (handled by FBE)
-TW_NO_LEGACY_PROPS := true
-
-# Brightness Screen
-# NOTE: Do NOT set TW_NO_SCREEN_BLANK with TW_SCREEN_BLANK_ON_BOOT
-# as they conflict. We keep TW_SCREEN_BLANK_ON_BOOT to keep display on
-# during boot and allow blanking after.
-# TW_NO_SCREEN_BLANK := true
-TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel/brightness"
-TW_MAX_BRIGHTNESS := 2047
-TW_DEFAULT_BRIGHTNESS := 1200
-
-# USB Configuration
-TW_EXCLUDE_DEFAULT_USB_INIT := true
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
-TW_HAS_NO_RECOVERY_PARTITION := true
-TW_USES_OTG_USB := true
-# TW_NO_USB_STORAGE := true
-
-# MTP
-TW_HAS_MTP := true
-# TW_MTP_DEVICE := /dev/mtp_usb
-
-# Storage
-RECOVERY_SDCARD_ON_DATA := true
-# TW_USB_STORAGE := true
-
-# Props
-TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
-
-# Temp
-TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone4/temp
-
-# StatusBar
-TW_STATUS_ICONS_ALIGN := center
-TW_CUSTOM_CPU_POS := "300"
-TW_CUSTOM_CLOCK_POS := "70"
-TW_CUSTOM_BATTERY_POS := "790"
-
-# Device Version
+# Device version
 TW_DEVICE_VERSION := Spark 20 (KJ5)
-
-# === VENDOR BOOT CONFIGURATION ===
-# With boot header v4, recovery ramdisk is placed inside vendor_boot
-# This variable is REQUIRED by the build system (build/make/core/) to pass
-# --partition_size to avbtool add_hash_footer when generating vendor_boot.img
-# For MT6768 (Helio G88), the stock scatter file defines vendor_boot at 0x4000000
-BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
-BOARD_VENDOR_BOOTIMAGE_PARTITION_RESERVED_SIZE := 0
-BOARD_USES_VENDOR_BOOTIMAGE := true
